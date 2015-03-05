@@ -1,0 +1,1029 @@
+% general purpose macros fo use with LaTeX (or TeX)
+
+\begingroup\makeatletter
+\gdef\mydoublespacing{\ifcase \@ptsize \relax % 10pt
+    \def\baselinestretch{1.667}
+  \or % 11pt
+    \def\baselinestretch{1.618}
+  \or % 12pt
+    \def\baselinestretch{1.655}
+  \fi
+ \ifx\undefined\@newbaseline% NFSS not present; 2.09 or 2e
+  \ifx\@currsize\normalsize\@normalsize\else\@currsize\fi%
+ \else% NFSS (2.09) present
+  \@newbaseline%
+\fi%
+}
+\endgroup
+
+%% SetFigFont for xfig stuff
+%\begingroup\makeatletter\ifx\SetFigFont\undefined%
+%\gdef\SetFigFont#1#2#3#4#5{%
+%  \reset@font\fontsize{#1}{#2pt}%
+%  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+%  \selectfont}%
+%\fi\endgroup%
+
+\begingroup\makeatletter
+\gdef\mysinglespacing{\def\baselinestretch{1}
+ \ifx\undefined\@newbaseline% NFSS not present; 2.09 or 2e
+  \ifx\@currsize\normalsize\@normalsize\else\@currsize\fi%
+ \else% NFSS (2.09) present
+  \@newbaseline%
+\fi%
+  \vskip\baselineskip% Correction for coming into singlespace
+}
+\endgroup
+%
+% cyclic convolution: make this better
+\def\cycc{\circledast}  % requires amssymb package
+
+% Some font commands suitable for Latex2e
+\def\dmin{d_{\text{min}}}
+\def\Abb{\mathbb{A}}   % \usepackage{amssymb}
+\def\Bbbb{\mathbb{B}}
+\def\Cbb{\mathbb{C}}
+\def\Fbb{\mathbb{F}}
+\def\Mbb{\mathbb{M}}
+\def\Nbb{\mathbb{N}}
+\def\Qbb{\mathbb{Q}}
+\def\Rbb{\mathbb{R}}
+\def\Xbb{\mathbb{X}}
+\def\Zbb{\mathbb{Z}}
+\def\sigspace{\EuScript{S}}  % \usepackage{euscript}
+\def\noisespace{\EuScript{N}}
+\def\Nscr{\EuScript{N}}
+\def\range{\EuScript{R}}
+\def\nullspace{\EuScript{N}}
+\def\modelM{\EuScript{M}}
+\def\Aeu{\EuScript{A}}
+\def\Beu{\EuScript{B}}
+\def\Ceu{\EuScript{C}}
+\def\Deu{\EuScript{D}}
+\def\Eeu{\EuScript{E}}
+\def\Feu{\EuScript{F}}
+\def\Geu{\EuScript{G}}
+\def\heu{\EuScript{h}}
+\def\Leu{\EuScript{L}}
+\def\Meu{\EuScript{M}}
+\def\Neu{\EuScript{N}}
+\def\Oeu{\EuScript{O}}
+\def\Peu{\EuScript{P}}
+\def\Peubar{\overline{\Peu}}
+\def\Peutilde{\tilde{\Peu}}
+\def\Qeu{\EuScript{Q}}
+\def\Reu{\EuScript{R}}
+\def\Seu{\EuScript{S}}
+\def\Xeu{\EuScript{X}}
+\def\hankelH{\EuScript{H}}
+\def\matlab{\sc Matlab}
+\def\timesbf{\pmb{\times}}
+\def\Aef{\mathfrak{A}}  % \usepackage{amsfonts}
+\def\Bef{\mathfrak{B}}  % \usepackage{amsfonts}
+\def\Cef{\mathfrak{C}}  % \usepackage{amsfonts}
+\def\bef{\mathfrak{b}}  % \usepackage{amsfonts}
+\def\aef{\mathfrak{a}}  % \usepackage{amsfonts}
+\def\Fef{\mathfrak{F}}  % \usepackage{amsfonts}
+\def\gef{\mathfrak{g}}  % \usepackage{amsfonts}
+\def\hef{\mathfrak{h}}  % \usepackage{amsfonts}
+\def\Gef{\mathfrak{G}}  % \usepackage{amsfonts}
+\def\Ief{\mathfrak{I}}  % \usepackage{amsfonts}
+\def\Mef{\mathfrak{M}}  % \usepackage{amsfonts}
+\def\Nef{\mathfrak{N}}  % \usepackage{amsfonts}
+\def\Pef{\mathfrak{P}}  % \usepackage{amsfonts}
+\def\Ref{\mathfrak{R}}  % \usepackage{amsfonts}
+\def\Sef{\mathfrak{S}}  % \usepackage{amsfonts}
+\def\sef{\mathfrak{s}}  % \usepackage{amsfonts}
+\def\Tef{\mathfrak{T}}  % \usepackage{amsfonts}
+\def\Eef{\mathfrak{E}}  % \usepackage{amsfonts}
+\def\Wef{\mathfrak{W}}  % \usepackage{amsfonts}
+\def\wef{\mathfrak{w}}  % \usepackage{amsfonts}
+\def\xef{\mathfrak{x}}  % \usepackage{amsfonts}
+\def\Xef{\mathfrak{X}}  % \usepackage{amsfonts}
+\def\yef{\mathfrak{y}}  % \usepackage{amsfonts}
+\def\Yef{\mathfrak{Y}}  % \usepackage{amsfonts}
+\def\zef{\mathfrak{z}}  % \usepackage{amsfonts}
+\def\Zef{\mathfrak{Z}}  % \usepackage{amsfonts}
+\def\reuf{\mathfrak{r}}  % \usepackage{amsfonts}
+\def\sef{\mathfrak{s}}  % \usepackage{amsfonts}
+
+\def\Aes{\EuScript{A}}  % \usepackage{euscript}
+\def\Ies{\EuScript{I}}  % \usepackage{euscript}
+\def\ges{\EuScript{g}}  % \usepackage{euscript}
+\def\Bes{\EuScript{B}}  % \usepackage{euscript}
+\def\Ges{\EuScript{G}}  % \usepackage{euscript}
+\def\Res{\EuScript{R}}  % \usepackage{euscript}
+\def\Tes{\EuScript{T}}  % \usepackage{euscript}
+\def\Ues{\EuScript{U}}  % \usepackage{euscript}
+\def\Xes{\EuScript{X}}  % \usepackage{euscript}
+\def\Yes{\EuScript{Y}}  % \usepackage{euscript}
+
+\def\Xesbf{\pmb{\EuScript{X}}}  % \usepackage{euscript}
+
+% "Note to self"
+\def\nts#1{[{\bf Note to self: }#1\typeout{#1}]}
+
+\def\Ggf{\mbox{\gothfamily G}}  % \usepackage{oldgerm}
+\def\Gsw{\mbox{\swabfamily G}}  % \usepackage{oldgerm}
+\def\Ssw{\mbox{\swabfamily S}}  % \usepackage{oldgerm}
+
+% \newcommand{\dotleq}{\prec\kern-1.8ex\raise1ex\hbox{.}\kern1.2ex}
+% \newcommand{\leqdot}{\prec\kern-1.8ex\lower.2ex\hbox{.}\kern1.2ex}
+%\newcommand{\leqdot}{\operatorname{\underset{\cdot}{\prec}}}
+\newcommand{\indotdot}{\operatorname{\stackrel{.}{\stackrel{\in}{.}}}}
+\newcommand{\divides}{\,\rule[-.8ex]{.25pt}{2.8ex}\,\,}
+% not divisible
+% \def\notdiv{\!\! \not \! |\,}
+\def\notdiv{\!\! \not  |\,}
+\def\mc{\mbox{:}}
+\newcommand{\eqskip}{\hskip 1.3ex}
+\newcommand{\partiald}[2]{\displaystyle\frac{\displaystyle \partial
+    #1}{\displaystyle \partial #2}}
+\newcommand{\partiale}[2]{\displaystyle\frac{\displaystyle \partial^2
+    #1}{\displaystyle \partial #2^2}}
+\newcommand{\partialw}[3]{\displaystyle\frac{\displaystyle \partial^2
+    #1}{\displaystyle \partial #2 \partial #3}}
+\newcommand{\modns}{\operatorname{mod}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\maj}{\operatorname{maj}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\trace}{\operatorname{tr}}
+\newcommand{\Trace}{\operatorname{Tr}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\residue}{\operatorname{Res}}
+\newcommand{\type}{\operatorname{type}}
+\newcommand{\tail}{\operatorname{tail}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\bdy}{\operatorname{bdy}}
+\newcommand{\closure}{\operatorname{closure}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\GCD}{\operatorname{GCD}}
+\newcommand{\LCM}{\operatorname{LCM}}
+\newcommand{\CRT}{\operatorname{CRT}}
+\newcommand{\order}{\operatorname{ord}}
+\newcommand{\dimension}{\operatorname{dim}}
+%\newcommand{\degree}{\operatorname{deg}}
+\newcommand{\circulant}{\operatorname{circulant}}
+\newcommand{\cor}{\operatorname{cor}}
+\newcommand{\vecop}{\operatorname{vec}}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\defeq}{\stackrel{\triangle}{=}}
+\newcommand{\bs}{\mbox{$\backslash$}}
+%\newcommand{\tr}{\mbox{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rect}{\operatorname{rect}}
+\newcommand{\argmin}{\text{arg}\min}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sign}{\operatorname{sign}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\argmax}{\operatorname{arg}\max}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\cov}{\operatorname{cov}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\var}{\operatorname{var}}
+\newcommand{\lspan}{\operatorname{span}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\shift}{\operatorname{shift}}
+% The following are for slides
+\newcommand{\slideline}{\vskip 3pt\hrule height2pt\vskip1.5pt\hrule}
+%\newcommand{\slidetitle}[1]{\vspace*{0.1in}
+%\begin{center}{\Large #1}\end{center}\slideline\vspace*{0.1in}}
+
+\def\infinity{\infty}
+\def\<{\hbox{$\langle$}}
+\def\>{\hbox{$\rangle$}}
+\def\la{\hbox{$\langle$}}
+\def\ra{\hbox{$\rangle$}}
+\newcommand{\innerp}[2]{\ensuremath{\langle #1,\, #2\rangle}}
+\newcommand{\matsize}[2]{\ensuremath{#1\times #2}}
+\newcommand{\expon}[1]{\ensuremath{\times 10^{#1}}}
+\newcommand{\subrange}[2]{\ensuremath{#1\mc #2}}
+%\newcommand{\rownum}[1]{\framebox{\text{row} #1}}
+
+%\def\alphaul{\underline{\alpha}} 
+%\def\betaul{\underline{\beta}}
+%\def\gammaul{\underline{\gamma}} 
+%\def\deltaul{\underline{\delta}}
+%\def\epsilonul{\underline{\epsilon}} 
+%\def\zetaul{\underline{\zeta}}
+%\def\etaul{\underline{\eta}} 
+%\def\thetaul{\underline{\theta}}
+%\def\iotaul{\underline{\iota}} 
+%\def\kappaul{\underline{\kappa}}
+%\def\lambdaul{\underline{\lambda}} 
+%\def\muul{\underline{\mu}}
+%\def\nuul{\underline{\nu}} 
+%\def\xiul{\underline{\xi}}
+%\def\piul{\underline{\pi}} 
+%\def\rhobf{\underline{\rho}}
+%\def\sigmaul{\underline{\sigma}} 
+%\def\tauul{\underline{\tau}}
+%\def\upsilonul{\underline{\upsilon}} 
+%\def\phiul{\underline{\phi}}
+%\def\chiul{\underline{\chi}}
+%\def\psiul{\underline{\psi}} 
+%\def\omegaul{\underline{\omega}}
+%\def\Deltaul{\underline{\Delta}} 
+%\def\Gammaul{\underline{\Gamma}}
+%\def\Thetaul{\underline{\Theta}} 
+%\def\Lambdaul{\underline{\Lambda}}
+%\def\Xiul{\underline{\Xi}} 
+%\def\Piul{\underline{\Pi}}
+%\def\Sigmaul{\underline{\Sigma}} 
+%\def\Upsilonul{\underline{\Upsilon}}
+%\def\Phiul{\underline{\Phi}} 
+%\def\Psiul{\underline{\Psi}}
+%\def\Omegaul{\underline{\Omega}} 
+%\def\ellul{\underline{\ell}}
+%\def\culprime{\underline{c^{\prime}}} 
+\def\alphabf{\hbox{\boldmath$\alpha$\unboldmath}}
+\def\betabf{\hbox{\boldmath$\beta$\unboldmath}}
+%\def\Gammabf{\hbox{\boldmath$\Gamma$\unboldmath}}
+\def\Gammabf{\pmb{\Gamma}}
+\def\gammabf{\hbox{\boldmath$\gamma$\unboldmath}}
+%\def\deltabf{\hbox{\boldmath$\delta$\unboldmath}}
+\def\epsilonbf{\hbox{\boldmath$\epsilon$\unboldmath}}
+%\def\zetabf{\hbox{\boldmath$\zeta$\unboldmath}}
+%\def\etabf{\hbox{\boldmath$\eta$\unboldmath}}
+%\def\Psibf{\boldsymbol{\Psi}}
+\def\Psibf{\pmb{\Psi}}
+\def\thetabf{\boldsymbol{\theta}}
+\def\etabf{\boldsymbol{\eta}}
+\def\rhobf{\boldsymbol{\rho}}
+\def\nubf{\boldsymbol{\nu}}
+\def\xibf{\boldsymbol{\xi}}
+\def\chibf{\boldsymbol{\chi}}
+\def\nubfhat{\hat{\boldsymbol{\nu}}}
+\def\thetabfhat{\hat{\boldsymbol{\theta}}}
+\def\xibfhat{\hat{\boldsymbol{\xi}}}
+%\def\Thetabf{\hbox{\boldmath$\Theta$\unboldmath}}
+\def\Thetabf{\pmb{\Theta}}
+%\def\Upsilonbf{\boldsymbol{\Upsilon}}
+\def\Upsilonbf{\pmb{\Upsilon}}
+\def\upsilonbf{\boldsymbol{\upsilon}}
+%\def\varthetabf{\hbox{\boldmath$\vartheta$\unboldmath}}
+%\def\iotabf{\hbox{\boldmath$\iota$\unboldmath}}
+%\def\kappabf{\hbox{\boldmath$\kappa$\unboldmath}}
+\def\lambdabf{\boldsymbol{\lambda}}
+\def\lambdabfbar{\hbox{$\overline{\boldsymbol{\lambda}}$}}
+\def\lambdabar{\overline{\lambda}}
+\def\sigmabar{\overline{\sigma}}
+\def\nubar{\overline{\nu}}
+\def\mubf{\boldsymbol{\mu}}
+\def\mubfhat{\hat{\boldsymbol{\mu}}}
+\def\nubf{\boldsymbol{\nu}}
+% \def\nubf{\hbox{\boldmath$\nu$\unboldmath}}
+%\def\xibf{\hbox{\boldmath$\xi$\unboldmath}}
+\def\pibf{\boldsymbol{\pi}}
+%\def\rhobf{\hbox{\boldmath$\rho$\unboldmath}}
+\def\sigmabf{\hbox{\boldmath$\sigma$\unboldmath}}
+%\def\Pibf{\hbox{\boldmath$\Pi$\unboldmath}}
+\def\Pibf{\pmb{\Pi}}
+%\def\Sigmabf{\hbox{\boldmath$\Sigma$\unboldmath}}
+\def\Sigmabf{\pmb{\Sigma}}
+\def\taubf{\hbox{\boldmath$\tau$\unboldmath}}
+%\def\upsilonbf{\hbox{\boldmath$\upsilon$\unboldmath}}
+\def\phibf{\hbox{\boldmath$\phi$\unboldmath}}
+\def\phibfhat{\hbox{$\hat{\boldmath\phi\unboldmath}$}}
+%\def\Phibf{\hbox{\boldmath$\Phi$\unboldmath}}
+%\def\chibf{\hbox{\boldmath$\chi$\unboldmath}}
+%\def\psibf{\hbox{\boldmath$\psi$\unboldmath}}
+\def\omegabf{\hbox{\boldmath$\omega$\unboldmath}}
+%\def\Deltabf{\hbox{\boldmath$\Delta$\unboldmath}}
+%\def\Gammabf{\hbox{\boldmath$\Gamma$\unboldmath}}
+%\def\Thetabf{\hbox{\boldmath$\Theta$\unboldmath}}
+\def\alphabf{\hbox{\boldmath$\alpha$\unboldmath}}
+%\def\Lambdabf{\hbox{\boldmath$\Lambda$\unboldmath}}
+\def\Lambdabf{\pmb{\Lambda}}
+\def\Deltabf{\pmb{\Delta}}
+%\def\Sigmabf{\hbox{\boldmath$\Sigma$\unboldmath}}
+%\def\Xibf{\hbox{\boldmath$\Xi$\unboldmath}}
+%\def\Pibf{\hbox{\boldmath$\Pi$\unboldmath}}
+%\def\Psibf{\hbox{\boldmath$\Psi$\unboldmath}}
+%\def\Omegabf{\hbox{\boldmath$\Omega$\unboldmath}}
+\def\Omegabf{\pmb{\Omega}}
+\def\onebf{\boldsymbol{1}}
+
+\def\nablabf{\boldsymbol{\nabla}}
+%\def\aul{\underline{a}}
+%\def\bul{\underline{b}} 
+%\def\cul{\underline{c}}
+%\def\dul{\underline{d}} 
+%\def\eul{\underline{e}}
+\def\ful{\underline{f}} 
+%\def\gul{\underline{g}}
+\def\hul{\underline{h}} 
+%\def\iul{\underline{i}}
+%\def\jul{\underline{j}} 
+\def\kul{\underline{k}}
+%\def\lul{\underline{l}} 
+\def\mul{\underline{m}}
+%\def\Mul{\underline{M}}
+\def\nul{\underline{n}} 
+%\def\oul{\underline{o}}
+%\def\pul{\underline{p}} 
+%\def\qul{\underline{q}}
+%\def\Qul{\underline{Q}}
+%\def\rul{\underline{r}} 
+%\def\sul{\underline{s}}
+%\def\tul{\underline{t}} 
+%\def\uul{\underline{u}}
+%\def\vul{\underline{v}} 
+\def\Vul{\underline{V}} 
+%\def\wul{\underline{w}}
+\def\xul{\underline{x}} 
+\def\Xul{\underline{X}} 
+\def\yul{\underline{y}}
+\def\zul{\underline{z}} 
+%\def\zeroul{\underline{0}} 
+%\def\rul{\underline{r}}
+\def\sul{\underline{s}}
+%\def\xulhat{\hat{\xul}}
+%\def\yul{\underline{y}} 
+%\def\Aul{\underline{A}}
+%\def\Bul{\underline{B}} 
+%\def\Cul{\underline{C}}
+%\def\Dul{\underline{D}} 
+\def\Eul{\underline{E}}
+%\def\Ful{\underline{F}} 
+%\def\Gul{\underline{G}}
+%\def\Hul{\underline{H}} 
+%\def\Iul{\underline{I}}
+%\def\Jul{\underline{J}} 
+%\def\Kul{\underline{K}}
+%\def\Lul{\underline{L}} 
+%\def\Mul{\underline{M}}
+%\def\Nul{\underline{N}} 
+%\def\Oul{\underline{O}}
+%\def\Pul{\underline{P}} 
+%\def\Qul{\underline{Q}}
+%\def\Rul{\underline{R}} 
+%\def\Sul{\underline{S}}
+%\def\Tul{\underline{T}} 
+%\def\Uul{\underline{U}}
+%\def\Vul{\underline{V}} 
+%\def\Wul{\underline{W}}
+%\def\Xul{\underline{X}} 
+%\def\Yul{\underline{Y}}
+%\def\Zul{\underline{Z}} 
+\def\abar{\overline{a}}
+\def\abarhat{\hat{\overline{a}}}
+\def\bbar{\overline{b}}
+\def\cbar{\overline{c}}
+\def\dbar{\overline{d}}
+\def\ebar{\overline{e}}
+\def\fbar{\overline{f}}
+\def\gbar{\overline{g}}
+\def\jbar{\overline{j}}
+\def\kbar{\overline{k}}
+\def\Fbar{\overline{F}}
+\def\Abar{\overline{A}}
+\def\Bbar{\overline{B}}
+\def\Cbar{\overline{C}}
+\def\Dbar{\overline{D}}
+\def\Gbar{\overline{G}}
+\def\Hbar{\overline{H}}
+\def\Ibar{\overline{I}}
+\def\Kbar{\overline{K}}
+\def\Mbar{\overline{M}}
+\def\Sbar{\overline{S}}
+\def\hoverline{\overline{h}}
+\def\nbar{\overline{n}}
+\def\pbar{\overline{p}}
+\def\qbar{\overline{q}}
+\def\rbar{\overline{r}}
+\def\sbar{\overline{s}}
+\def\tbar{\overline{t}}
+\def\ubar{\overline{u}}
+\def\vbar{\overline{v}}
+\def\wbar{\overline{w}}
+\def\xbar{\overline{x}}
+\def\ybar{\overline{y}}
+\def\zbar{\overline{z}}
+\def\xbardot{\dot{\overline{x}}}
+\def\xbfbardot{\dot{\overline{\xbf}}}
+\def\xbarddot{\ddot{\overline{x}}}
+\def\xbfbarhat{\hat{\overline{\xbf}}}
+
+\def\deltadot{\dot{\delta}}
+\def\deltaddot{\ddot{\delta}}
+\def\Omegabar{\overline{\Omega}}
+\def\Lambdabar{\overline{\Lambda}}
+\def\gammabar{\overline{\gamma}}
+
+\def\sbful{\underline{\sbf}}
+\def\xbful{\underline{\xbf}}
+\def\xbfuldot{\dot{\underline{\xbf}}}
+\def\xbfulhatdot{\dot{\underline{\hat{\xbf}}}}
+\def\xbfulhat{\underline{\hat{\xbf}}}
+
+\def\Jbar{\overline{J}}
+\def\Lbar{\overline{L}}
+\def\Nbar{\overline{N}}
+\def\Pbar{\overline{P}}
+\def\Rbar{\overline{R}}
+\def\Ubar{\overline{U}}
+\def\Vbar{\overline{V}}
+\def\Wbar{\overline{W}}
+\def\Xbar{\overline{X}}
+\def\Ybar{\overline{Y}}
+%\def\xbarul{\underline{\overline{x}}}
+%\def\Xbar{\overline{X}}
+%\def\Jbar{\overline{J}}
+\def\abfbar{\overline{\abf}}
+\def\abfbarhat{\hat{\overline{\abf}}}
+\def\bbfbar{\overline{\bbf}}
+\def\cbfbar{\overline{\cbf}}
+\def\dbfbar{\overline{\dbf}}
+\def\hbfbar{\overline{\hbf}}
+\def\gbfbar{\overline{\gbf}}
+\def\mbfbar{\overline{\mbf}}
+\def\pbfbar{\overline{\pbf}}
+\def\qbfbar{\overline{\qbf}}
+\def\rbfbar{\overline{\rbf}}
+\def\sbfbar{\overline{\sbf}}
+\def\ubfbar{\overline{\ubf}}
+\def\vbfbar{\overline{\vbf}}
+\def\wbfbar{\overline{\wbf}}
+\def\xbfbar{\overline{\xbf}}
+\def\ybfbar{\overline{\ybf}}
+\def\zbfbar{\overline{\zbf}}
+
+\def\abf{{\mathbf{a}}} 
+\def\bbf{\mathbf{b}}
+\def\cbf{\mathbf{c}} 
+\def\dbf{\mathbf{d}} 
+\def\ebf{\mathbf{e}}
+\def\fbf{\mathbf{f}} 
+\def\gbf{\mathbf{g}} 
+\def\hbf{\mathbf{h}}
+\def\ibf{\mathbf{i}} 
+\def\jbf{\mathbf{j}} 
+\def\kbf{\mathbf{k}}
+\def\lbf{\mathbf{l}} 
+\def\mbf{\mathbf{m}} 
+\def\nbf{\mathbf{n}}
+\def\obf{\mathbf{o}} 
+\def\pbf{\mathbf{p}}
+%\def\pbold{\matbf{p}} 
+%\def\pboldf{\matbf{p}}
+\def\qbf{\mathbf{q}}
+\def\rbf{\mathbf{r}} 
+\def\rbfol{\overline{\mathbf{r}}}
+\def\sbf{\mathbf{s}} 
+\def\tbf{\mathbf{t}}
+\def\ubf{\mathbf{u}} 
+\def\vbf{\mathbf{v}}
+\def\wbf{\mathbf{w}}
+\def\xbf{\mathbf{x}}
+\def\ybf{\mathbf{y}}
+\def\ybfol{\overline{\mathbf{y}}}
+\def\zbf{\mathbf{z}}
+\def\Abf{\mathbf{A}} 
+\def\Bbf{\mathbf{B}} 
+\def\Cbf{\mathbf{C}}
+\def\Dbf{\mathbf{D}} 
+\def\Ebf{\mathbf{E}} 
+\def\Fbf{\mathbf{F}} 
+\def\Gbf{\mathbf{G}} 
+\def\Hbf{\mathbf{H}} 
+\def\Hbf{\hbox{\bf H}} 
+\def\Ibf{\mathbf{I}}
+\def\Jbf{\mathbf{J}}
+\def\Kbf{\mathbf{K}} 
+\def\Lbf{\mathbf{L}} 
+\def\Mbf{\mathbf{M}} 
+\def\Nbf{\mathbf{N}} 
+\def\Pbf{\mathbf{P}} 
+\def\Qbf{\mathbf{Q}} 
+\def\Rbf{\mathbf{R}} 
+\def\Sbf{\mathbf{S}} 
+\def\Tbf{\mathbf{T}} 
+\def\Ubf{\mathbf{U}} 
+\def\Vbf{\mathbf{V}} 
+\def\Wbf{\mathbf{W}} 
+\def\Xbf{\mathbf X} 
+\def\Rbfhat{\hat{\mathbf R}}
+\def\Xbfhat{\hat{\mathbf X}}
+\def\Xbfbar{\overline{\Xbf}}
+\def\Ybf{\mathbf{Y}} 
+\def\Ybfhat{\hat{\mathbf Y}}
+\def\Zbf{\mathbf Z} 
+\def\abfhat{\hat{\abf}}
+\def\bbfhat{\hat{\bbf}}
+\def\cbfhat{\hat{\cbf}}
+\def\dbfhat{\hat{\dbf}}
+\def\ebfhat{\hat{\ebf}}
+\def\fbfhat{\hat{\fbf}}
+\def\hbfhat{\hat{\hbf}}
+\def\ibfhat{\hat{\ibf}}
+\def\mbfhat{\hat{\mbf}}
+\def\nbfhat{\hat{\nbf}}
+\def\pbfhat{\hat{\pbf}}
+\def\rbfhat{\hat{\rbf}}
+\def\sbfhat{\hat{\sbf}}
+\def\tbfhat{\hat{\tbf}}
+\def\tbfhathat{\hat{\hat{\tbf}}}
+\def\ubfhat{\hat{\ubf}}
+\def\vbfhat{\hat{\vbf}}
+\def\wbfhat{\hat{\wbf}}
+\def\xbfhat{\hat{\xbf}}
+\def\ybfhat{\hat{\ybf}}
+\def\zbfhat{\hat{\zbf}}
+\def\ebfhatdot{\dot{\hat{\ebf}}}
+\def\xbfhatdot{\dot{\hat{\xbf}}}
+\def\phihat{\hat{\phi}}
+\def\tauhat{\hat{\tau}}
+\def\phitilde{\tilde{\phi}}
+\def\Phihat{\hat{\Phi}}
+\def\psihat{\hat{\psi}}
+\def\phibar{\overline{\phi}}
+\def\muhat{\hat{\mu}}
+\def\abfbar{\overline{\abf}}
+\def\alphabar{\overline{\alpha}}
+\def\betabar{\overline{\beta}}
+\def\kappabar{\overline{\kappa}}
+\def\mubar{\overline{\mu}}
+%\def\betabar{\overline{\beta}}
+%\def\ybfhat{\hat{\ybf}}
+%\def\Xbfhat{\hat{\Xbf}}
+\def\atilde{\tilde{a}}
+\def\btilde{\tilde{b}}
+\def\ctilde{\tilde{c}}
+\def\dtilde{\tilde{d}}
+\def\etilde{\tilde{e}}
+\def\gtilde{\tilde{g}}
+\def\abftilde{\tilde{\abf}}
+\def\bbftilde{\tilde{\bbf}}
+\def\cbftilde{\tilde{\cbf}}
+\def\dbftilde{\tilde{\dbf}}
+\def\ebftilde{\tilde{\ebf}}
+\def\fbftilde{\tilde{\fbf}}
+\def\gbftilde{\tilde{\gbf}}
+\def\hbftilde{\tilde{\hbf}}
+\def\ebftildedot{\dot{\tilde{\ebf}}}
+\def\mtilde{\tilde{m}}
+\def\mbftilde{\tilde{\mbf}}
+\def\nbftilde{\tilde{\nbf}}
+\def\rbftilde{\tilde{\rbf}}
+\def\ubftilde{\tilde{\ubf}}
+\def\vbftilde{\tilde{\vbf}}
+\def\ibftilde{\tilde{\ibf}}
+\def\sbftilde{\tilde{\sbf}}
+\def\xbftilde{\tilde{\xbf}}
+\def\wbftilde{\tilde{\wbf}}
+\def\ybftilde{\tilde{\ybf}}
+\def\zbftilde{\tilde{\zbf}}
+\def\xbftildedot{\dot{\tilde{\xbf}}}
+%\def\Ybfhat{\hat{\Ybf}}
+\def\Atilde{\tilde{A}}
+\def\Btilde{\tilde{B}}
+\def\Ctilde{\tilde{C}}
+\def\ftilde{\tilde{f}}
+\def\Etilde{\tilde{E}}
+\def\Ftilde{\tilde{F}}
+\def\Gtilde{\tilde{G}}
+\def\htilde{\tilde{h}}
+\def\Htilde{\tilde{H}}
+\def\Itilde{\tilde{I}}
+\def\ktilde{\tilde{k}}
+\def\Ktilde{\tilde{K}}
+\def\Ltilde{\tilde{L}}
+\def\Mtilde{\tilde{M}}
+\def\ntilde{\tilde{n}}
+\def\Otilde{\tilde{O}}
+\def\Ptilde{\tilde{P}}
+\def\Qtilde{\tilde{Q}}
+\def\Rtilde{\tilde{R}}
+\def\ptilde{\tilde{p}}
+\def\qtilde{\tilde{q}}
+\def\rtilde{\tilde{r}}
+\def\stilde{\tilde{s}}
+\def\Ttilde{\tilde{T}}
+\def\ttilde{\tilde{t}}
+\def\utilde{\tilde{u}}
+\def\vtilde{\tilde{v}}
+\def\wtilde{\tilde{w}}
+\def\xtilde{\tilde{x}}
+\def\ztilde{\tilde{z}}
+\def\xtildehat{\hat{\tilde{x}}}
+\def\ytilde{\tilde{y}}
+\def\Vtilde{\tilde{V}}
+\def\Xtilde{\tilde{X}}
+\def\Ytilde{\tilde{Y}}
+\def\itilde{\tilde{i}}
+\def\nablatilde{\tilde{\nabla}}
+\def\zerobf{\mbox{\bf 0}}
+\def\Ac{{\cal A}} 
+\def\Bc{{\cal B}}
+\def\Cc{{\cal C}} 
+\def\Dc{{\cal D}} 
+\def\Ec{{\cal E}} 
+\def\Fc{{\cal F}} 
+\def\Gc{{\cal G}} 
+\def\Hc{{\cal H}} 
+\def\Ic{{\cal I}}
+%\def\Jc{{\cal J}} 
+\def\Kc{{\cal K}} 
+\def\Lc{{\cal L}} 
+\def\Mc{{\cal M}} 
+\def\Nc{{\cal N}} 
+\def\Oc{{\cal O}} 
+\def\Pc{{\cal P}}
+\def\Qc{{\cal Q}} 
+\def\Rc{{\cal R}} 
+\def\Sc{{\cal S}} 
+\def\Tc{{\cal T}} 
+\def\Uc{{\cal U}} 
+\def\Vc{{\cal V}} 
+\def\Wc{{\cal W}}
+\def\Xc{{\cal X}} 
+\def\Yc{{\cal Y}} 
+\def\Zc{{\cal Z}}
+
+\def\Ebftilde{\tilde{\Ebf}}
+\def\Hbftilde{\tilde{\Hbf}}
+\def\Jbftilde{\tilde{\Jbf}}
+
+\def\ahat{\hat{a}}
+\def\ahatbar{\overline{\hat{a}}}
+\def\Ahat{\hat{A}}
+\def\bhat{\hat{b}}
+\def\Bhat{\hat{B}}
+\def\chat{\hat{c}}
+\def\Chat{\hat{C}}
+\def\dhat{\hat{d}}
+\def\Dhat{\hat{D}}
+\def\fhat{\hat{f}}
+\def\ghat{\hat{g}}
+\def\gcheck{\check{g}}
+\def\Mcheck{\check{M}}
+\def\Ghat{\hat{G}}
+\def\hhat{\hat{h}}
+\def\Hhat{\hat{H}}
+\def\Ihat{\hat{I}}
+\def\Lhat{\hat{L}}
+\def\Mhat{\hat{M}}
+\def\mhat{\hat{m}}
+\def\Nhat{\hat{N}}
+\def\phat{\hat{p}}
+\def\Phat{\hat{P}}
+\def\qhat{\hat{q}}
+\def\rhat{\hat{r}}
+\def\Fhat{\hat{F}}
+\def\Rhat{\hat{R}}
+\def\shat{\hat{s}}
+\def\Shat{\hat{S}}
+\def\That{\hat{T}}
+\def\that{\hat{t}}
+\def\uhat{\hat{u}}
+\def\vhat{\hat{v}}
+\def\Vhat{\hat{V}}
+\def\what{\hat{w}}
+\def\What{\hat{W}}
+\def\xhat{\hat{x}}
+\def\Uhat{\hat{U}}
+\def\Xhat{\hat{X}}
+\def\yhat{\hat{y}}
+\def\Yhat{\hat{Y}}
+\def\zhat{\hat{z}}
+\def\Zhat{\hat{Z}}
+
+\def\dhatdot{\dot{\dhat}}
+\def\Mhatdot{\dot{\hat{M}}}
+
+\def\Abfhat{\hat{\Abf}} 
+
+%\def\Yhat{\hat{Y}}
+%\def\thetahat{\hat{\theta}}
+%\def\thetahatul{\hat{\thetaul}}
+%\def\limms{\mathop{{\rm l.i.m.\, }}}
+%\def\rank{\mathop{{\rm rank\, }}}
+%\def\Ker{\mathop{{\rm Ker\, }}}
+%\def\Cov{\mathop{{\rm Cov\, }}}
+%\def\Var{\mathop{{\rm Var\, }}}
+%\def\tr{\mathop{{\rm tr\, }}}
+%\def\diag{\mathop{{\rm diag\, }}}
+%\def\dotplus{\stackrel{\displaystyle .}{+}}
+%\def\infinity{\infty}
+%\def\xhbf{\hat{\xul}}
+\def\hdot{\dot{h}}
+\def\edot{\dot{e}}
+\def\dotd{\dot{d}}
+\def\fdot{\dot{f}}
+\def\mdot{\dot{m}}
+\def\Mdot{\dot{M}}
+\def\Ndot{\dot{N}}
+\def\pdot{\dot{p}}
+\def\qdot{\dot{q}}
+\def\rdot{\dot{r}}
+\def\vdot{\dot{v}}
+\def\wdot{\dot{w}}
+\def\xdot{\dot{x}}
+\def\zdot{\dot{z}}
+\def\bbfdot{\dot{\bbf}}
+\def\bbfddot{\ddot{\bbf}}
+\def\ebfdot{\dot{\ebf}}
+\def\rbfdot{\dot{\rbf}}
+\def\wbfdot{\dot{\wbf}}
+\def\xbfdot{\dot{\xbf}}
+\def\xbfddot{\ddot{\xbf}}
+\def\ybfdot{\dot{\ybf}}
+\def\zbfdot{\dot{\zbf}}
+\def\zbfddot{\ddot{\zbf}}
+\def\pddot{\ddot{p}}
+\def\eddot{\ddot{e}}
+\def\xddot{\ddot{x}}
+\def\Xdot{\dot{X}}
+\def\xdddot{\dddot{x}}
+\def\vddot{\ddot{v}}
+\def\ydddot{\dddot{y}}
+\def\ydot{\dot{y}}
+\def\yddot{\ddot{y}}
+\def\zddot{\ddot{z}}
+
+\def\thetadot{\dot{\theta}}
+\def\sigmadot{\dot{\sigma}}
+\def\gammadot{\dot{\gamma}}
+\def\phidot{\dot{\phi}}
+\def\thetaddot{\ddot{\theta}}
+\def\omegadot{\dot{\omega}}
+\def\omegaddot{\ddot{\omega}}
+\def\thetabfddot{\ddot{\thetabf}}
+
+
+% hat greek letters
+\def\alphahat{\hat{\alpha}}
+\def\betahat{\hat{\beta}}
+\def\sigmahat{\hat{\sigma}}
+\def\chihat{\hat{\chi}}
+\def\thetahat{\hat{\theta}}
+\def\varthetahat{\hat{\vartheta}}
+\def\omegahat{\hat{\omega}}
+\def\lambdahat{\hat{\lambda}}
+\def\Lambdahat{\hat{\Lambda}}
+\def\epsilonhat{\hat{\epsilon}}
+\def\etahat{\hat{\eta}}
+\def\varepsilonhat{\hat{\varepsilon}}
+\def\Psihat{\hat{\Psi}}
+\def\nuhat{\hat{\nu}}
+\def\Omegahat{\hat{\Omega}}
+
+% hat, dot greek letters
+\def\thetahatdot{\dot{\hat{\theta}}}
+\def\omegahatdot{\dot{\hat{\omega}}}
+
+% checked letters
+\def\epsiloncheck{\check{\epsilon}}
+\def\chicheck{\check{\chi}}
+\def\gammacheck{\check{\gamma}}
+\def\etacheck{\check{\eta}}
+\def\Ccheck{\check{C}}
+\def\Ucheck{\check{U}}
+\def\Xcheck{\check{X}}
+
+% barred greek letters
+\def\epsilonbar{\overline{\epsilon}}
+
+% Tilded greek letters
+\def\alphatilde{\tilde{\alpha}}
+\def\betatilde{\tilde{\beta}}
+\def\mutilde{\tilde{\mu{}}}
+\def\thetatilde{\tilde{\theta}}
+\def\rhotilde{\tilde{\rho}}
+\def\chitilde{\tilde{\chi}}
+\def\epsilontilde{\tilde{\epsilon}}
+\def\etatilde{\tilde{\eta}}
+\def\gammatilde{\tilde{\gamma}}
+\def\omegatilde{\tilde{\omega}}
+\def\Phitilde{\tilde{\Phi}}
+\def\Psitilde{\tilde{\Psi}}
+\def\Sigmatilde{\tilde{\Sigma}}
+\def\sigmatilde{\tilde{\sigma}}
+
+
+% Tilde dot greek letters
+\def\thetatildedot{\dot{\tilde{\theta}}}
+\def\omegatildedot{\dot{\tilde{\omega}}}
+
+% san serif things
+\def\fss{\mathsf{f}}
+\def\uss{\mathsf{u}}
+\def\xss{\mathsf{x}}
+\def\Xss{\mathsf{X}}
+\def\yss{\mathsf{y}}
+\def\Yss{\mathsf{Y}}
+\def\zss{\mathsf{z}}
+\def\ubfss{\mathsf{u}}
+\def\xbfss{\mathsf{x}}
+\def\ybfss{\mathsf{y}}
+\def\Esf{\mathsf{E}}
+\def\Hss{\mathsf{H}}
+\def\Lss{\mathsf{L}}
+\def\Mss{\mathsf{M}}
+\def\Nss{\mathsf{N}}
+\def\Lsf{\mathsf{L}}
+\def\Fss{\mathsf{F}}
+\def\Rss{\mathsf{R}}
+\def\Sss{\mathsf{S}}
+\def\Ssf{\mathsf{S}}
+
+% bold san serif things
+\def\xssbf{\text{\sffamily{\bfseries x}}}
+\def\yssbf{\text{\sffamily{\bfseries y}}}
+\def\ybfsf{\text{\sffamily{\bfseries y}}}
+
+
+%\newcommand{\csub}[2]{_{{#1}|{#2}}}
+%\newcommand{\cmean}[2]{\xhbf\csub{#1}{#2}}
+%\newcommand{\cvar}[2]{P\csub{#1}{#2}}
+%\newcommand{\cvinv}[2]{P^{-1}\csub{#1}{#2}}
+%\newcommand{\cK}[2]{K\csub{#1}{#2}}
+%\newcommand{\cKinv}[2]{K^{-1}\csub{#1}{#2}}
+%\newcommand{\cc}[2]{\cul\csub{#1}{#2}}
+%\newcommand{\cGamma}[2]{\Gamma\csub{#1}{#2}}
+%\newcommand{\cGinv}[2]{\Gamma^{-1}\csub{#1}{#2}}
+%\newcommand{\cS}[2]{S\csub{#1}{#2}}
+%\newcommand{\cB}[2]{\Bc\csub{#1}{#2}}
+%\newcommand{\cV}[2]{\Vc\csub{#1}{#2}}
+%\newcommand{\cX}[2]{{\Xul\csub{#1}{#2}}}
+%\newcommand{\cJ}[2]{J\csub{#1}{#2}}
+%\newcommand{\cKtilde}[2]{\tild{eK}\csub{#1}{#2}}
+%\newcommand{\tprime}{{t^\prime}}
+%\newcommand{\sprime}{{s^\prime}}
+%\newcommand{\kprime}{{k^\prime}}
+%\newcommand{\cu}[2]{\ubf\csub{#1}{#2}}
+%\newcommand{\cx}[2]{\xbf\csub{#1}{#2}}
+%\newcommand{\cl}[2]{\lbf\csub{#1}{#2}}
+%\newcommand{\cus}[2]{\ubf^*\csub{#1}{#2}}
+%\newcommand{\cls}[2]{\lbf^*\csub{#1}{#2}}
+%\newcommand{\cG}[2]{\Gc\csub{#1}{#2}}
+%\newcommand{\px}[1]{p_{{\rm x}_{#1}}}
+%\newcommand{\pxx}[2]{p_{{\rm x}_{#1}|{\rm x}_{#2}}}
+%\newcommand{\pxY}[2]{p_{{\rm x}_{#1}|{\rm Y}_{#2}}}
+%\newcommand{\pxZ}[2]{p_{{\rm x}_{#1}|{\rm Z}_{#2}}}
+%\newcommand{\pyx}[2]{p_{{\rm y}_{#1}|{\rm x}_{#2}}}
+%\newcommand{\pzx}[2]{p_{{\rm z}_{#1}|{\rm x}_{#2}}}
+%\newcommand{\pxy}[2]{p_{{\rm x}_{#1}|{\rm y}_{#2}}}
+%\newcommand{\pxz}[2]{p_{{\rm x}_{#1}|{\rm z}_{#2}}}
+%\newcommand{\pxxgY}[3]{p_{{\rm x}_{#1},{\rm x}_{#2}|{\rm Y}_{#3}}}
+%\newcommand{\pxgxY}[3]{p_{{\rm x}_{#1}|{\rm x}_{#2},{\rm Y}_{#3}}}
+%\newcommand{\pygxY}[3]{p_{{\rm y}_{#1}|{\rm x}_{#2},{\rm Y}_{#3}}}
+\newcommand{\pcheckbf}{\mbox{$\check{\pbf}$}}
+
+\def\Fsf{\mathsf F}
+\def\Hsf{\mathsf H}
+\def\xsf{\mathsf x} 
+\def\ysf{\mathsf y} 
+\def\zsf{\mathsf z} 
+\def\Rsf{\mathsf R}
+\def\Xsf{\mathsf X}
+\def\Ysf{\mathsf Y}
+\def\Zsf{\mathsf Z}
+\def\esf{\mathsf e} 
+
+%%Misc stuff
+% \newtheorem{theorem}{Theorem} 
+% \newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{Corollary}[theorem]{Corollary}
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
+% \newtheorem{conjecture}{Conjecture}
+
+%\newtheorem{interproof}{Proof}
+
+\newcommand{\myendsquare}{\hspace*{\fill}\nolinebreak[1]%
+\hspace*{\fill}$\Box$}
+
+\newsavebox{\factboxbox}                    % see Goossens p. 443
+\newenvironment{sfactbox}      % a short factbox
+{\begin{lrbox}{\factboxbox}
+}
+{\end{lrbox}\begin{center}\fbox{\usebox{\factboxbox}}\end{center}
+}
+
+
+\newenvironment{factbox}
+{\par\begin{quote}\begin{boxitpara}{}
+}
+{ \end{boxitpara}
+\end{quote}}
+%{ \setlength{\factboxwidth}{\textwidth-2\parindent}
+%\begin{lrbox}{\factboxbox}\begin{minipage}{\factboxwidth}
+%}
+%{\end{minipage}
+%\end{lrbox}
+%\fbox{\usebox{\factboxbox}}
+%}
+
+%\newenvironment{proof}
+%{\begin{interproof}}{\end{interproof}\myendsquare}
+
+% Proof: see proof.tex
+
+
+\newenvironment{matlabprog}
+{\ttfamily}{}
+
+\def\Aut{\underset{\sim}{A}}
+\def\But{\underset{\sim}{B}}
+\def\Rut{\underset{\sim}{R}}
+\def\Put{\underset{\sim}{P}}
+\def\utt#1{\underset{\sim}{\text{#1}}}
+\def\ut#1{\underset{\sim}{#1}}
+
+\makeatletter
+{\newdimen\p@renwd
+\p@renwd=20pt
+\gdef\bbordermatrix#1{\begingroup \m@th
+  \setbox\z@\vbox{\def\cr{\crcr\noalign{\kern2\p@\global\let\cr\endline}}%
+    \ialign{$##$\hfil\kern2\p@\kern\p@renwd&\thinspace\hfil$##$\hfil
+      &&\quad\hfil$##$\hfil\crcr
+      \omit\strut\hfil\crcr\noalign{\kern-\baselineskip}%
+      #1\crcr\omit\strut\cr}}%
+  \setbox\tw@\vbox{\unvcopy\z@\global\setbox\@ne\lastbox}%
+  \setbox\tw@\hbox{\unhbox\@ne\unskip\global\setbox\@ne\lastbox}%
+  \setbox\tw@\hbox{$\kern\wd\@ne\kern-\p@renwd\left[\kern-\wd\@ne
+    \global\setbox\@ne\vbox{\box\@ne\kern2\p@}%
+    \vcenter{\kern-\ht\@ne\unvbox\z@\kern-\baselineskip}\,\right]$}%
+  \null\;\vbox{\kern\ht\@ne\box\tw@}\endgroup}
+}
+\makeatother
+
+\def\bnum#1{\setlength{\unitlength}{1mm}%
+\begin{picture}(10,10)(0,0)%
+\thinlines%
+\put(0,0){\makebox(0,0){c}{#1}}%
+\put(0,0){\circle{2em}}%
+\end{picture}}
+
+\newenvironment{mathtable}
+{\begin{center}
+\begin{boxedminipage}{0.9\textwidth}
+\begin{enumerate}[\hskip 5pt 1 \hskip 40 pt]
+}
+{\end{enumerate}
+\end{boxedminipage}
+\end{center}
+}
+\newcommand{\mtitem}[1]{\item $\displaystyle{#1}$}
+\newcommand{\mtitemtwo}[2]{\item $\displaystyle{#1}$ \newline #2}
+
+
+% definition is now in definition.sty
+
+\makeatother%
+
+
+
+\newsavebox{\citename}                    % see Goossens p. 443
+\newsavebox{\citesource}
+\def\quotesourcefont{\small}
+% \begin{quotesource}{authorname}{[citation]}  quote \end{quotesource}
+\newenvironment{quotesource}[2]
+{\setbox200=\hbox{#2}
+ \ifnum\wd200>0 
+    \begin{lrbox}{\citename} \hbox{\quotesourcefont --- \vtop{\hbox{
+            #1}\hbox{\quotesourcefont #2}}} \end{lrbox}
+ \else
+    \begin{lrbox}{\citename}{\quotesourcefont --- #1} \end{lrbox}
+ \fi
+\begin{quote}\quotesourcefont
+}
+{\hspace*{\fill}\nolinebreak[1]\hspace*{\fill}%
+\usebox{\citename}\end{quote}}
+
+\def\eqnskip{2pt}  % space between values stacked in a single equation
+\newlength{\exmatsp} % space between partials
+\setlength{\exmatsp}{4pt}
+\newlength{\Exmatsp}
+\setlength{\Exmatsp}{6pt}
+
+\def\threecomp{\: \mbox{\raisebox{.5ex}{$\underset{\scriptstyle
+    >}{\overset{\scriptstyle <}{\scriptstyle=}}$}} \:}
+\def\twocomp{\:\overset{\scriptstyle >}{\scriptstyle <}\:}
+
+\newcommand{\chapterpart}[1]{
+\begin{center}
+{\sffamily \bfseries\large #1}
+\end{center}
+\addtocontents{toc}{\protect\centerline{\sffamily \bfseries #1}}}
+
+\def\bitsep{\raisebox{-1.6ex}{\makebox[0cm]{\^}} }
+\def\syncsep{\kern -.3ex \raisebox{2ex}{\makebox[0cm]{$\downarrow$}}\kern .3ex}
+
+
+% steplist is an environment that can be used to outline algorithms
+\newcounter{stepctr}
+\newenvironment{steplist}
+{\begin{list}{{\small \textsf{Step} \arabic{stepctr}}: }
+{\usecounter{stepctr}\setlength{\labelsep}{0pt}%
+\settowidth{\labelwidth}{{\small \textsf{Step} 10}: }%
+\setlength{\leftmargin}{\labelwidth+\labelsep}}}
+{\end{list}}

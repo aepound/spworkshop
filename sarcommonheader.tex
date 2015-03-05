@@ -1,0 +1,171 @@
+%%%
+% If this isn't usuthesis class then, we can use the 
+% fullspace and setspace packages.
+%%%
+\makeatletter
+  \def\@getcl@ss#1.cls#2\relax{\def\@currentclass{#1}}
+  \def\@getclass{\expandafter\@getcl@ss\@filelist\relax}
+  \@getclass
+  \typeout{This document uses \@currentclass\space class...}
+  \@ifclassloaded{usuthesis}% {class}{<true>}{<false>}
+    {}% Don't want to use this, if we're in usuthesis class. 
+    { % If we are NOT being included in the thesis,
+      % then use these package...
+      \usepackage{fullpage}
+      \usepackage{setspace}
+      \doublespacing
+      %\singlespacing
+    }% 
+\makeatother
+
+\usepackage{import}
+\usepackage{currfile}
+\usepackage{etoolbox}
+
+\usepackage[abbreviations]{foreign}
+\usepackage{datetime}
+\longdate
+\robustify{\formatdate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Graphics related packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx} 	% for inserting graphics.
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, plotmarks}
+\definecolor{dark-gray}{gray}{0.2}
+\definecolor{light-gray}{gray}{0.3}
+
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Math related packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amssymb}  	% provides Rbb, etc.
+\usepackage{latexsym}  	% provides \Box
+\usepackage{euscript}
+
+% Let's doublecheck that the \libdir command is defined:
+\typeout{The abspath is |\currfiledir|...}
+\import{\currfiledir}{sarsymbolmac}       % A long list of symbols...
+% It looks like we need to include this in each *.tex file.
+
+% A few to define...
+\renewcommand*{\Re}{\operatorname{Re}}
+\renewcommand*{\Im}{\operatorname{Im}} 
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Figures and tables related packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{booktabs}	% for fancy tabular environments and stuff
+\usepackage{subcaption}	% for subfigures... 
+
+% I thought about adding this in to be able to switch between lscape
+% and pdflscape... but decided I didn't need to...
+%\usepackage{ifpdf}
+%\ifpdf
+%\usepackage{pdflscape}
+%\else
+\usepackage{lscape}
+%\fi
+
+\usepackage{adjustbox}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Comments related packages/commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myrule}{\textcolor{light-gray}{\noindent\rule{\linewidth}{0.07mm}}\\}
+\newcommand{\editmark}{\begin{center}\textcolor{light-gray}{\noindent\rule{\linewidth}{0.07mm}}\\ 
+    To be Edited:\end{center}} 
+\newcommand{\edit}[1]{\editmark \textcolor{dark-gray}{#1}\\\myrule}
+\newcommand{\ruled}[1]{\begin{center}\myrule
+    \textcolor{dark-gray}{#1}\\\vspace{-.5em}\myrule\end{center}} 
+\usepackage{comment}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Various other commands:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand{\etal}{et~al.~}  % Don't need if the foreign package is loaded.
+\renewcommand{\matlab}{{\sc Matlab }} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% ******** For code: ******************
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+% ******** Define the language: *******
+\lstdefinelanguage{matlabfloz}{%
+   alsoletter={...},%
+   morekeywords={%                                    % keywords
+     break,case,catch,continue,%
+     elseif,else,end,for,function,%
+     global,if,otherwise,persistent,%
+     return,switch,try,while,...,%
+     classdef,properties,methods},%
+   comment=[l]\%,%                                    % comments
+   morecomment=[l]...,%                               % comments
+   morestring=[m]',%                                  % strings 
+}[keywords,comments,strings]%
+\lstdefinestyle{matlab}{language=matlabfloz                           
+       ,keywordstyle=\color[rgb]{0,0,1}
+       ,commentstyle=\color[rgb]{0.133,0.545,0.133}   % comments
+       ,stringstyle=\color[rgb]{0.627,0.126,0.941}    % strings
+       ,numbersep=3mm
+       ,numbers=left
+       ,numberstyle=\tiny                             % number style
+}
+% ******** Set the style: **************
+\lstset{style=matlab}
+\newenvironment{matcode}{}{}
+\newenvironment{matlabc}{}{}
+\newenvironment{octavec}{}{}
+\excludecomment{matlabc}
+\excludecomment{octavec}
+\excludecomment{matcode}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% For hyperlinks:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%(This breaks Beamer if the patch isn't applied!!)
+%\usepackage{hyperref}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Bibliography related packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{varioref}
+\usepackage{cleveref}
+\newcommand{\nochapbibs}[1]{#1}
+% ^^ This command can be redefined in a document that shouldn't have the 
+%    bibliographies defined separately...  
+%    For example, each chapter may have a bibliography defined within a
+%    nochapbibs environment, but if the document that includes them redefines
+%    the command as \renewcommand{\nochapbibs}[1]{}, then the individual 
+%    bibliographies won't appear.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% For git information:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[markifdraft]{gitinfo2}
