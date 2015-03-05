@@ -1,62 +1,53 @@
+%{
 \documentclass[10pt]{article}
-%\input{page}
-%\usepackage{fullpage}	% Does about the same as the \input{page}...
-% ^ part of the preprint package...
+\usepackage{standalone}
 
-\input{symbolmac}
-\usepackage{amsmath}
-\usepackage{amssymb}  	% provides Rbb, etc.
-\usepackage{latexsym}  	% provides \Box
-%\usepackage{theorem} \input{proof}
-%\pagestyle{empty}
-\usepackage{graphicx} 	% for inserting graphics.
-%\usepackage{booktabs}	% for fancy tabular environments and stuff
-%\usepackage{subfig}	% for subfigures... 
-%(This breaks Beamer if the patch isn't applied!!)
-%usepackage{hyperref}
+\usepackage{currfile}
+\newcommand{\libdir}{./lib}
+\input{\libdir/sarcommonheader}
 
+\onehalfspacing
 
-%% ******** For code: ******************
-%\usepackage{listings}
-%\usepackage[usenames,dvipsnames]{color}
-%% ******** Define the language: *******
-%\lstdefinelanguage{matlabfloz}{%
-%	alsoletter={...},%
-%	morekeywords={% 						% keywords
-%	break,case,catch,continue,elseif,else,end,for,function,global,%
-%	if,otherwise,persistent,return,switch,try,while,...,
-%        classdef,properties,methods},%
-%	comment=[l]\%,% 						% comments
-%	morecomment=[l]...,% 					% comments
-%	morestring=[m]',%   						% strings 
-%}[keywords,comments,strings]%
-%\lstdefinestyle{matlab}{language=matlabfloz,							
-%		keywordstyle=\color[rgb]{0,0,1},					
-%		commentstyle=\color[rgb]{0.133,0.545,0.133},	% comments
-%		stringstyle=\color[rgb]{0.627,0.126,0.941},	% strings
-%		numbersep=3mm, numbers=left, numberstyle=\tiny% number style
-%}
-%% ******** Set the style: **************
-%\lstset{style=matlab}
+\title{Machine Learning on Sparse Decompositions of Hyperspectral
+  Images} 
 
-
-
-%\newcommand{\matlab}{{\sc Matlab }} % Or 
-\renewcommand{\matlab}{{\sc Matlab }} 
-
-% \newcommand{\homedir}{/home/aepound}
-% \newcommand{\figdir}{\homedir/figs}  % picture stuff: ps,fig,tex
-%\newtheorem{theorem}{Theorem}
-%\newtheorem{corollary}{Corollary}
-%\newtheorem{lemma}{Lemma}
-
-\title{Inser Title
-}
 \author{Andrew Pound}
 \date{\today}
+%}
+% Matlab code for running the experiments detailed in this paper.
+clear all
+close all
 
+% Matlab output directory.  The place to put the output files that we
+% are making...
+outdir = './matout';
+%{
+% Let's make it the same in LaTeX...
+\newcommand{\matdir}{./matout}
+%}
+% Record version of MATLAB/Octave
+a = ver('octave');
+if length(a) == 0
+    a = ver('matlab');
+end
+fid = fopen([outdir filesep 'vers.tex'], 'w');
+fprintf(fid, [a.Name ' version ' a.Version]);
+fclose(fid);
 
+% Record computer architecture.
+fid = fopen([outdir filesep 'computer.tex'], 'w');
+fprintf(fid, ['\\verb+' computer '+']);
+fclose(fid);
 
+% Record date of run.
+fid = fopen([outdir filesep 'date.tex'], 'w');
+fprintf(fid, datestr(now, 'dd/mm/yyyy'));
+fclose(fid);
+
+% Add in the paths necessary for the HSI processing.
+addpath(genpath('./matlab'));
+
+%{
 \begin{document}
 \maketitle
 
@@ -66,7 +57,11 @@
 
 
 
+
+
+
 % \bibliographystyle{ieeetr}
 % \newcommand{\bibdir}{~}
 % \bibliography{\bibdir/~}
 \end{document}
+%}
