@@ -19,12 +19,29 @@ I am up in the air on how to actually do the compilation. I have
 I will have to maybe try out both methods and see which fits my needs
 better.
 
-# General idea
+## General idea
 
 I imagine the workflow would be something like this:
-I run matlab on the foo.m file to produce the dataset(s) that I need.
-I then cat the file into a foo.Rnw file and run R -e "knitr("foo.Rnw")", 
+1. I run matlab on the foo.m file to produce the dataset(s) that I need.
+2. I then cat the file into a foo.Rnw file and run R -e "knitr("foo.Rnw")", 
 or something like that...
-I then run Matlab (if there are any results that I need to analyze in 
+3. I then run Matlab (if there are any results that I need to analyze in 
 Matlab more..)
-Then I latex the output to produce the final document.
+4. Then I latex the output to produce the final document.
+
+## Matlab portion
+
+I use Matlab for most of my coding.  I am very familiar with it and have 
+a lot of experience working in it.  I also have a lot of code that I'm 
+leveraging from my thesis to be able to do the analysis more efficiently.
+I am only barely proficient in R, so this will be an adventure. I have done
+some machine learning in R, so as long as I am able to get the information 
+I need back into matlab or the LaTeX, then I should be alright.
+
+## Things to look into:
+
+1. Does R have a `.mat` reader?  That would make transfer of variables 
+much easier.
+2. What ML algorithms do I want to look at?
+
+
