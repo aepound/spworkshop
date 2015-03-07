@@ -43,5 +43,5 @@ I need back into matlab or the LaTeX, then I should be alright.
 1. Does R have a `.mat` reader?  That would make transfer of variables 
 much easier.
 2. What ML algorithms do I want to look at?
-
+ 
 

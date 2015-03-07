@@ -54,7 +54,7 @@ addpath(genpath('./matlab'));
 %\begin{abstract}
 %\end{abstract}
 
-What am I doing for thins paper? 
+What am I doing for this paper? 
 I am going to perform the comparison that should have been part of my
 thesis.  I will first run a number of ML algorithms on the raw HSI
 data itself to see how it is able to do at classifying the HSI
@@ -69,7 +69,10 @@ in both languages and hope to be able to code just about everything in
 here, to be distributed as needed.  
 
 
-
+<<global_options, include=FALSE}>>=
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+@
 
 
 % \bibliographystyle{ieeetr}
