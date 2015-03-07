@@ -1,0 +1,16 @@
+# Set the default for any file not recognized...
+* text=auto
+
+# Set it for matlab files
+*.m     text eol=lf
+*.fig   binary
+*.mat   binary
+
+# PDFs
+*.pdf   binary
+
+
+# TeX stuff
+*.tex   text eol=lf
+*.Rnw   text eol=lf
+
