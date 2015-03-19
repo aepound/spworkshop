@@ -184,14 +184,8 @@ else
     bestCubes = bestCubes(2:2:end);
 end
 
-
-
-
-
 %{  
 \end{matcode}
-
-
 
 
 
@@ -216,6 +210,8 @@ end
 [succ,msg,msgID] = copyfile([fname '.m'],[fname ext]);
 
 % R command to run...
+
+%%TODO: figure out the knitr command...
 
 % LaTeX command
 if isunix
