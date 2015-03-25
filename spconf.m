@@ -76,121 +76,18 @@ here, to be distributed as needed.
 \begin{matcode}
 %}
 %% Initialization/Preparation
-[hntest host] = system('hostname');
-host = host(1:end-1);
-if ~hntest
-    switch host
-      case {'conan','lb-black'}
-        addpath('/home/aepound/Dropbox/HSI/work')
-        addpath('/home/aepound/Dropbox/HSI/work/scripts') % has the cubeinfo .mat
-        addpath('/home/aepound/Dropbox/HSI/rf/try1')
-        cd ~/Dropbox/HSI/work/
-        load('acrosstimevars','allCubes','mats','wavelengths','t');
-      otherwise
-        load RFfails.mat
-    end
-end
-
-% Chop them down a bit:
-allCubes = allCubes(200:end);
-mats = mats(200:end,:,:,:);
-mats = permute(mats, [1 4 3 2]);
-t = allCubes.getDates;
-tnum = datenum(t);
-
-%% Dataset
-% First let's build us a decent set of cubes to do the learning from.
-% The idea of this is to take a look at a histogram of each material, then
-% select the top cubes which give us the nominal or best 
-szmats = size(mats);
-nmats = szmats(4);
-nhist = 100;
-npixs = prod(szmats(1:2));
-
-nmost2pick = 100;
-
-nselect = 10;               % # of training cubes to select.
-
-sameNumTest = 1;            % Do we want the same number of test
-                            % samples as training samples?
-
-votes = zeros(szmats(1),szmats(4));
-
-mfh = 0;
-plotting = 0;
-
-for iter = 1:nmats
-    % Grab this materials:
-    data = cube2matrix(squeeze(mats(:,:,:,iter)));
-    % Compute the histogram...
-    [H d] = hist(data.', nhist);
-    if plotting
-        mfh(iter) = figure;
-        imagesc(1:258,d,H),set(gca,'ydir','normal'),hold on
-    end
-    % Finding the most "used" spectra..
-    [mx mxind] = max(H);
-    px = d(mxind);
-    if plotting
-        plot(1:258,px,'k','linewidth',2)    
-    end
-    
-    d2 = median(data,2);
-    if plotting
-        plot(1:258,d2,'k*-','linewidth',1.5)
-    end
-    
-    Hnorm = (H./npixs);
-    Hnorm1 = bsxfun(@rdivide,Hnorm,sqrt(sum(Hnorm.^2)));
-    Hh = bsxfun(@times,d,Hnorm1.^2);
-    dd = sum(Hh);
-    if plotting
-        plot(1:258,dd,'w','linewidth',2)
-    end
-    
-    Hnorm1 = bsxfun(@rdivide,Hnorm.^2, sqrt(sum((Hnorm.^2).^2)));
-    Hh = bsxfun(@times,d,Hnorm1.^2);
-    dd = sum(Hh);
-    if plotting
-        plot(1:258,dd,'w*-','linewidth',1.5)
-    
-    
-        hl = legend('max','median','weighted','weighted^2');
-        set(hl,'color',[204 204 204]./256)
-    end
-    
-    winner = px;
-    
-    % Compute the distance btwn px and all the data:
-    dis = winner.'*data;
-    
-    dism = matrix2cube(dis,[szmats(1:2) 1]);
-    dism = sum(dism,2);
-    [dism2 dismind]=sort(dism);
-    votes(dismind,iter) = (1:szmats(1)).';    
-end
-
-[srt srtind] = sort(sum(votes,2));
-
-if ~sameNumTest
-    selection = srtind(1:nselect+1);
-    bestCubes = allCubes(selection);
-    testCube = bestCubes(1);
-    bestCubes = bestCubes(2:end);
-else
-    selection = srtind(1:nselect*2);
-    bestCubes = allCubes(selection);
-    testCube = bestCubes(1:2:end);
-    bestCubes = bestCubes(2:2:end);
-end
-
+loadHSI
 %{  
 \end{matcode}
 
 
-
-
 <<global_options, include=FALSE}>>=
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+@
+
+
+<<managing_packages, include=FALSE}>>=
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
                       echo=FALSE, warning=FALSE, message=FALSE)
 @
