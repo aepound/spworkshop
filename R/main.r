@@ -25,11 +25,11 @@ fitControl = trainControl(method = "cv", number = 10)
 # Tuning parameter: mtry
 # Mtry ranges from 1:number of variables
 rfGrid = expand.grid(.mtry = 1:sqrt(length(train)));
-rfFit = train( train.x, train.y,"rf", tuneGrid=rfGrid, trControl=fitControl)
-fitRF = randomForest( train.x, as.factor(train.y), mtry=as.matrix(rfFit$bestTune))
-pred.rf = predict(fitRF, newdata=test.x)
+rfFit = train( scale(train.x), as.factor(train.y),"rf", tuneGrid=rfGrid, trControl=fitControl)
+fitRF = randomForest( scale(train.x), as.factor(train.y), mtry=as.matrix(rfFit$bestTune))
+pred.rf = predict(fitRF, newdata=scale(test.x))
 mse.rf= mean( (pred.rf - test.y)^2 )
-rfFit$bestTune
-mse.rf
+print(rfFit$bestTune)
+print(mse.rf)
 
 
