@@ -3,10 +3,10 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
   ## abbrev        : The name caret knows the method by, or NULL if not known by Caret.
   ## search.params : This is the search space for the tuning parameters. (from expand.grid)
   ## tune.params   : This is the list of parameters for caret (from trainControl)
-  ## data.x        : This is the training data (predictors)
-  ## data.y        : This is the training responses.
-  ## test.x        : This is the test set to calculate the predicted values.
-  ## test.y        : This is the test set response.
+  ## train.data$x<>: This is the training data (predictors)
+  ## train.data$y  : This is the training responses.
+  ## test.data$x<> : This is the test set to calculate the predicted values.
+  ## test.data$y   : This is the test set response.
   ## meth.args     : A list of model parameters w/ NULLs for the tuning parameters.
   ## model.formula : A formula class object for the model fitting interface
   ## caret.formula : A formula class object for the caret tuning interface
@@ -108,7 +108,7 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
     }
     
     ## Return the error back out:
-    err = mean(out.test != test.y)  ## Misclassification error.
+    err = mean(out.test != test.data$y)  ## Misclassification error.
     print(paste("=====","   Error = ",formatC(err,digits=4,width=6,format="f",flag=0)))
     ## save: error, model, predictions on the test set, and tuned params.
     output = list(err=err,model=this.model,pred=out.test,tuned = tuned.params) 
@@ -191,7 +191,7 @@ myTuningAlg = function(method, abbrev, search.params, tune.params, train.data, m
   nfold = tune.params$number
   nreps = tune.params$repeats
 
-##  browser()
+#  browser()
   
   cv.results = vector("double", nreps)
   param.results = vector("double",sz.params[1])
@@ -241,15 +241,23 @@ myTuningAlg = function(method, abbrev, search.params, tune.params, train.data, m
         itest  = (1:sz[1])[j == ifold]
 
         ## buildCall = function(meth.args, search.params, tuned.params, train.data, model.formula)         
-        i.meth.args = buildCall(i.meth.args, search.params = NULL,
+        ii.meth.args = buildCall(i.meth.args, search.params = NULL,
                                 tuned.params = NULL,
                                 train.data[itrain,], model.formula=caret.formula)
+        #browser()
         ## Do the training...
-        cfit = do.call(method,i.meth.args)
+        cfit = do.call(method,ii.meth.args)
 
         ## Now we need to produce the predictions on the held-back K-fold
-        i.pred[itest] = predict(cfit,newdata=train.data[itest,-1]);
+        if (method %in% c('NaiveBayes', 'lda') ){
+            preds = predict(cfit,newdata=train.data[itest,-1]);
+            i.pred[itest] = preds$class;
+        }
+        else{
+            i.pred[itest] = predict(cfit,newdata=train.data[itest,-1]);
+        }
       }
+      #browser()
       ## Calculate the error for this K-fold CV:
       cv.results[i] = mean(i.pred != train.data$y)
 

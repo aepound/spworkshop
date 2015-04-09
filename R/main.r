@@ -11,13 +11,91 @@ list.of.packages <- c(
                       "plyr",
                       "pls",
                       "caret",
-                      "matlab"
+                      "matlab",
+                      "MASS",
+                      "doMC"
                       )
 
 check_n_install_packages( list.of.packages )
 
+#===================================================
+#  Try to use a parallel backend to the foreach loop.
+#---------------------------------------------------
+#tt = try(registerDoParallel(cores=2))
+#if (class(tt) == "try-error"){
+#    cl = makeCluster(2)
+#    tt = try(registerDoParallel(cl)
+# }
+#else {
+#     print("I guess we'll be doing everything sequentially.")
+# }
+
+tt = try(registerDoMC(2))
+if (class(tt) == "try-error"){
+    print("I guess we'll be doing everything sequentially.")
+}
+
 #====================================================
 fitControl = trainControl(method = "cv", number = 3)
+
+#====================================================
+# Source the tuning methods...
+source('tuneMethods.r')
+
+
+N = 1  ## Number of times to change up the random sample:
+
+ErrTotal = NULL
+TuneTotal = NULL
+errCnt = 0;
+
+for (miter in 1:N){
+
+
+#====================================================
+#  Running all the methods.
+tt = try(source("allmethods.r"))
+
+if (class(tt) == "try-error"){
+  Errs = NULL
+  tunes = NULL
+  errCnt = errCnt+1;
+}
+
+ErrTotal = rbind(ErrTotal,Errs)
+TuneTotal = rbind(TuneTotal,tunes)
+
+
+ErrTotal = rbind(ErrTotal,Errs)
+TuneTotal = rbind(TuneTotal,tunes)
+
+save.image(file="fullResults.Rdata")
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if(0){
 
 #====================================================
 # RF
@@ -93,3 +171,4 @@ print(error.rf)
 #print(nb.caretraw$bestTune)
 #print(error.nb)
 
+} # IF (0)
