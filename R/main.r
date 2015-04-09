@@ -25,8 +25,11 @@ fitControl = trainControl(method = "cv", number = 10)
 # Tuning parameter: mtry
 # Mtry ranges from 1:number of variables
 rfGrid = expand.grid(.mtry = 1:sqrt(length(train)));
+print("Performing Cross-validation...")
 rfFit = train( scale(train.x), as.factor(train.y),"rf", tuneGrid=rfGrid, trControl=fitControl)
+print("Training Forest...")
 fitRF = randomForest( scale(train.x), as.factor(train.y), mtry=as.matrix(rfFit$bestTune))
+print("Running Test set...")
 pred.rf = predict(fitRF, newdata=scale(test.x))
 mse.rf= mean( (pred.rf - test.y)^2 )
 print(rfFit$bestTune)
