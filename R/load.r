@@ -34,9 +34,13 @@ set.seed(123456)
 train = read.table("../matout/train",header = FALSE)
 test  = read.table("../matout/test" ,header = FALSE)
 
-train.x <- train[,-length(train)] # Training data
-train.y <- train[, length(train)] # Training classes
+train.x <- train[,-length(train)]            # Training data
+train.y <- as.factor(train[, length(train)]) # Training classes
 
-test.x  <- test[,-length(test)]   # Testing data
-test.y  <- test[, length(test)]   # Testing classes
+test.x  <- test[,-length(test)]              # Testing data
+test.y  <- as.factor(test[, length(test)])   # Testing classes
 
+# Let's cut it down while we are testing out the code...
+inTraining <- createFolds(train.y, k=9, list=TRUE,returnTrain=TRUE)
+train.x <- train.x[-inTraining$Fold1,]
+train.y <- train.y[-inTraining$Fold1]

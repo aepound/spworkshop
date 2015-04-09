@@ -106,27 +106,27 @@ testCube   = testCubes(1);                           % First test cube
 % Ok, now we have our training and test sets, let's get them ready
 % to output to R.
 
-try
+%try
     % Training data:
-    trainmats = trainCubes.loadMaterials;
+%    trainmats = trainCubes.loadMaterials;
     % Testing data:
-    testmats = testCubes.loadMaterials;
-catch ME
-    % Then most likely, this machine doesn't have the real data...
-    % So grab it from the loaded data.
-    trnmats = mats(selection(traininds),:,:,:);
-    tstmats = mats(selection(testinds), :,:,:);
-    trainmats = [];
-    for iter = 1:size(trnmats,1)
-        trainmats = cat(1,trainmats, squeeze(trnmats(iter,:,:,:)));
-    end
-    trainmats = permute(trainmats,[1 3 2]);
-    testmats = [];
-    for iter = 1:size(tstmats,1)
-        testmats = cat(1,testmats, squeeze(tstmats(iter,:,:,:)));
-    end
-    testmats = permute(testmats,[1 3 2]);
+%    testmats = testCubes.loadMaterials;
+%catch ME
+% Then most likely, this machine doesn't have the real data...
+% So grab it from the loaded data.
+trnmats = mats(selection(traininds),:,:,:);
+tstmats = mats(selection(testinds), :,:,:);
+trainmats = [];
+for iter = 1:size(trnmats,1)
+    trainmats = cat(1,trainmats, squeeze(trnmats(iter,:,:,:)));
 end
+trainmats = permute(trainmats,[1 3 2]);
+testmats = [];
+for iter = 1:size(tstmats,1)
+    testmats = cat(1,testmats, squeeze(tstmats(iter,:,:,:)));
+end
+testmats = permute(testmats,[1 3 2]);
+%end
 
 sztrain = size(trainmats);
 sztest = size(testmats);
@@ -145,6 +145,9 @@ classes_ts = (classes_ts(:)).';
 % These will output to the filenames given above...
 
 % Write out the training data to the specified file.
+if exist(trainfilename,'file')
+    delete(trainfilename);
+end
 fid = fopen(trainfilename,'wt'); 
 for iter = 1:size(mat2d_tr,2)
     fprintf(fid,'%g\t',mat2d_tr(:,iter));
@@ -153,6 +156,9 @@ end
 fclose(fid);
 
 % Write out the testing data.
+if exist(testfilename,'file')
+    delete(testfilename);
+end
 fid = fopen(testfilename,'wt');
 for iter = 1:size(mat2d_ts,2)
     fprintf(fid,'%g\t',mat2d_ts(:,iter));
