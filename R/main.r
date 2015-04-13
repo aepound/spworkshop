@@ -6,6 +6,7 @@ list.of.packages <- c(
                       "e1071",
                       "RWeka",
                       "kernlab",
+                      "klaR",
                       "nnet",
                       "gbm",
                       "plyr",
@@ -13,7 +14,7 @@ list.of.packages <- c(
                       "caret",
                       "matlab",
                       "MASS",
-                      "doMC"
+                      "doParallel"
                       )
 
 check_n_install_packages( list.of.packages )
@@ -21,7 +22,7 @@ check_n_install_packages( list.of.packages )
 #===================================================
 #  Try to use a parallel backend to the foreach loop.
 #---------------------------------------------------
-#tt = try(registerDoParallel(cores=2))
+tt = try(registerDoParallel(cores=2))
 #if (class(tt) == "try-error"){
 #    cl = makeCluster(2)
 #    tt = try(registerDoParallel(cl)
@@ -30,10 +31,10 @@ check_n_install_packages( list.of.packages )
 #     print("I guess we'll be doing everything sequentially.")
 # }
 
-tt = try(registerDoMC(2))
-if (class(tt) == "try-error"){
-    print("I guess we'll be doing everything sequentially.")
-}
+#tt = try(registerDoMC(2))
+#if (class(tt) == "try-error"){
+#    print("I guess we'll be doing everything sequentially.")
+#}
 
 #====================================================
 fitControl = trainControl(method = "cv", number = 3)

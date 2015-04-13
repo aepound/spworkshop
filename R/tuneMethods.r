@@ -90,6 +90,7 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
 
     ## Evaluate the call:    
     print(paste("=====","   Training..."))
+    #browser()
     this.model = do.call(method,meth.args)  
 
     ##--------------------------------------------
@@ -98,12 +99,13 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
     ## A couple of fixes for a few different methods:
     print(paste("=====","   Predicting..."))
     ##  TODO: **** This should be wrapped into a tryCatch statement: *****
+    #browser()
     if (!is.null(abbrev) && abbrev %in% c("rpart","knn")){
       out.test = predict(this.model, newdata=test.data[,-1],type="class")
     }else{
       out.test = predict(this.model, newdata=test.data[,-1])
     }
-    if (!is.null(abbrev) && abbrev %in% "lda"){
+    if (!is.null(abbrev) && abbrev %in% c("nb","lda")){
       out.test = out.test$class
     }
     
@@ -192,100 +194,12 @@ myTuningAlg = function(method, abbrev, search.params, tune.params, train.data, m
   nreps = tune.params$repeats
 
 #  browser()
-  
-  cv.results = vector("double", nreps)
-  param.results = vector("double",sz.params[1])
-  one.vec = vector("double",1)
-  
-  i.pred = vector("integer",sz[1])
-  ##------------------------------------
-  ## This sets up a list with the names
-  ## of the parameters that we are going to vary.
-  if( is.list(meth.args) && length(meth.args)){ ## Basically: if it's NOT an empty list...
-    .name.meth.args = paste(".",names(meth.args),sep="")  ## Prepend a period.
-  }else{
-    .name.meth.args = NULL
-  }
-  ## Now we can compare the name of the tuning parameters with this list
-  ## of names to be able to assign the parameters that we are testing. 
-
-  ##*********************************************************************************************
-  ## Someday it might be nice to put parallelization in here, but right now, I don't know how.
-  ## Also, some of the methods already take advantage of parallelization
-  ## (But maybe this is only in the caret package, and not in the method itself...)
-  ##*********************************************************************************************
-  for (p in 1:sz.params[1]){                       ## Iterate over the parameters to be tested...
-    i.meth.args = meth.args;
-    cv.results = vapply(cv.results,function(x){0},one.vec) ## Zero out the CV results vector.
-    
-
-    ## TODO: Clean this up and figure out what we need to be doing......
-    if ( is.data.frame(search.params) ){
-      ## Then this is most likely from expand.grid()
-      for (ii in colnames(search.params)){            ## Assign the parameters
-        i.meth.args[.name.meth.args == ii] = search.params[p,ii]
+      if (substr(i,1,1) == '.'){ ## If the names start with a period, match that...
+        match.ind = paste(".",names(meth.args),sep="") == i
+      }else {                    ## Otherwise, just match the names...
+        match.ind = names(meth.args) == i
       }
-    }else{ ## If there are no parameters: 
-      i.meth.args=list()   ## Make an empty list to add on the other needed args..
-    }
-
-    
-    for (i in 1:nreps){ ## Iterate over the # of repeats
-      ifold = sample( rep(1:nfold,length=sz[1]) )
-      
-      ## Zero out the predicted classes.
-      i.pred = factor(vapply(i.pred,function(x){NA},one.vec),levels(train.data$y)) 
-      for (j in 1:nfold){                         ## Iterate over the K-folds for CV
-
-        itrain = (1:sz[1])[j != ifold]
-        itest  = (1:sz[1])[j == ifold]
-
-        ## buildCall = function(meth.args, search.params, tuned.params, train.data, model.formula)         
-        ii.meth.args = buildCall(i.meth.args, search.params = NULL,
-                                tuned.params = NULL,
-                                train.data[itrain,], model.formula=caret.formula)
-        #browser()
-        ## Do the training...
-        cfit = do.call(method,ii.meth.args)
-
-        ## Now we need to produce the predictions on the held-back K-fold
-        if (method %in% c('NaiveBayes', 'lda') ){
-            preds = predict(cfit,newdata=train.data[itest,-1]);
-            i.pred[itest] = preds$class;
-        }
-        else{
-            i.pred[itest] = predict(cfit,newdata=train.data[itest,-1]);
-        }
-      }
-      #browser()
-      ## Calculate the error for this K-fold CV:
-      cv.results[i] = mean(i.pred != train.data$y)
-
-    }
-    ## Calculate the mean across the repeats:
-    param.results[p] = mean(cv.results)
-  }
-
-  ## Now select the parameters with the lowest error:
-  tuned.params = as.matrix( search.params[ (which(param.results == min(param.results)))[1] , ] )
-  colnames(tuned.params) <- names(search.params);
-  ##  browser()
-  return(tuned.params)
-}## End of function: myTuningAlg()
-
-##==================================================
-##  Build the call 
-##--------------------------------------------------
-## This function builds a list with the arguments
-## needed to be able to call the training function.
-buildCall = function(meth.args, search.params, tuned.params, train.data, model.formula=NULL){ 
-  ## Build the call:
-  ## browser()
-  ## Substitute in the tuned parameters:
-  if (!is.null(search.params) && is.list(meth.args)){
-    ## (ie NOT empty grid)   AND    (is a list)
-    for (i in colnames(tuned.params)){
-      meth.args[paste(".",names(meth.args),sep="") == i] = tuned.params[,i]
+      meth.args[match.ind] = tuned.params[,i]
       ##        ^^ Pick out the col with name i     ^^
     }
   }else {
@@ -300,16 +214,35 @@ buildCall = function(meth.args, search.params, tuned.params, train.data, model.f
     }
   }
   ## Add in the training data: (or the formula and data)   
-  if (!is.null(model.formula)){ 
+  if (!is.null(model.formula)){
+    ## Check to see if the formula is already there...
+    #browser()
     ## Using the formula interface:
     stopifnot(is.formula(model.formula))   ## It IS a formula....
+
+    ## Check to see if the formula is in the first position:
+    formula.position = 'formula' %in% names(meth.args)
+    if (formula.position[1]){
+      no.reverse = TRUE
+    } else{
+      no.reverse = FALSE
+    }
     meth.args$data = train.data;           ## Load up the full training data.
     meth.args$formula = model.formula;     ## Add in the formula.
   }else{
     ## Using the matrix interface.
+    ## Check to see if "x" is in the first position:
+    formula.position = 'x' %in% names(meth.args)
+    if (formula.position[1]){
+      no.reverse = TRUE
+    } else{
+      no.reverse = FALSE
+    }
     meth.args$y=train.data$y;
     meth.args$x=as.matrix(train.data[,-1]);
   }
-  meth.args = rev(meth.args)  ## Reverse the arguments, so that x (or formula) is first.
+  if (!no.reverse) {
+    meth.args = rev(meth.args)  ## Reverse the arguments, so that x (or formula) is first.
+  }
   
 } ## End function: buildCall()
