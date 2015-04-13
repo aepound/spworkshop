@@ -5,7 +5,7 @@ datafile.name = "run1.Rdata"
 
 ##===================================
 ##  Recursive Partitioning
-if (done){
+if (!done){
 rpart.grid = expand.grid(.cp = c(0.0005, 0.001,(seq(0.005,.35,.005))) )
 rpart.args = list(cp=NULL)
 rpart.form = formula( y ~ . )
@@ -19,7 +19,7 @@ save.image(file=datafile.name)
 ##===================================
 ##  Random Forests
 ##----------------------------------
-if (done){
+if (!done){
 if(testing){
   rf.grid = expand.grid(.mtry = 1:3)
 }else{
@@ -35,6 +35,7 @@ save.image(file=datafile.name)
 ##===================================
 ##  Neural Nets
 ##----------------------------------
+## This still errors...  4/13/15
 if (done){
 if(testing){
   nnet.grid = expand.grid(.decay=(0:1)/50000, .size=(1:2) )
@@ -76,6 +77,7 @@ save.image(file=datafile.name)
 ##===================================
 ##  Multiclass Logistic
 ##----------------------------------
+## This still errors...  4/13/15
 if(done){
 if(testing){
   mlog.grid = expand.grid(.decay=(0:2)/50000)
@@ -92,7 +94,7 @@ save.image(file=datafile.name)
 ##==================================
 ## svmMulti
 ##----------------------------------
-if(done){
+if(!done){
 svmMulti.grid = expand.grid(.C = c(seq(0.05,2,0.05)))
 svmMulti.args = list(C = NULL, trace = FALSE, type="kbb-svc")
 svmMulti.out = tuneMethods("ksvm",NULL,svmMulti.grid,
