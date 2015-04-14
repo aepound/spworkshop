@@ -24,7 +24,7 @@ qda.grid = NULL
 qda.args = list()
 qda.form = formula( y ~ . )
 qda.out = tuneMethods("qda","qda",qda.grid,fitControl,train.all,test.all,qda.args,qda.form,qda.form)
-pda.out$name = "QDA"
+qda.out$name = "QDA"
 print(paste(" "))
 save.image(file=datafile.name)
 } # IF done
