@@ -4,7 +4,36 @@ testing = FALSE;
 nvars=ncol(train.x)
 
 ##===================================
+##  Linear Discriminant Analysis
+##----------------------------------
+if(!done){
+lda.grid = NULL
+lda.args = list()
+lda.form = formula( y ~ . )
+lda.out = tuneMethods("lda","lda",lda.grid,fitControl,train.all,test.all,lda.args,lda.form,lda.form)
+lda.out$name = "LDA"
+print(paste(" "))
+save.image(file=datafile.name)
+} # IF done
+
+##===================================
+##  Quadratic Discriminant Analysis
+##----------------------------------
+if(done){
+qda.grid = NULL
+qda.args = list()
+qda.form = formula( y ~ . )
+qda.out = tuneMethods("qda","qda",qda.grid,fitControl,train.all,test.all,qda.args,qda.form,qda.form)
+pda.out$name = "QDA"
+print(paste(" "))
+save.image(file=datafile.name)
+} # IF done
+
+
+
+##===================================
 ##  Recursive Partitioning
+##----------------------------------
 if (!done){
 rpart.grid = expand.grid(.cp = c(0.0005, 0.001,(seq(0.005,.35,.005))) )
 rpart.args = list(cp=NULL)
