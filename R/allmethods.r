@@ -2,15 +2,35 @@ Errs = list()
 done = FALSE;
 testing = FALSE;
 nvars=ncol(train.x)
+##==================================
+##  Algorithms to run:
+##----------------------------------
+algs = list()
+algs = c(algs, "lda")
+#algs = c(algs, "qda")   
+algs = c(algs, "rpart")
+algs = c(algs, "rf")
+#algs = c(algs, "nnet")  ## Still errors
+algs = c(algs, "nb")
+algs = c(algs, "rpart")
+#algs = c(algs, "mlog")  ## Still errors
+algs = c(algs, "svm")
+
+print("==================================")
+print(" Algorithms to be tested:         ")
+trash =  lapply(algs,print);
+print("----------------------------------")
+print(" ")
 
 ##===================================
 ##  Linear Discriminant Analysis
 ##----------------------------------
-if(!done){
+if("lda" %in% algs){
 lda.grid = NULL
 lda.args = list()
 lda.form = formula( y ~ . )
-lda.out = tuneMethods("lda","lda",lda.grid,fitControl,train.all,test.all,lda.args,lda.form,lda.form)
+lda.out = tuneMethods("lda","lda",lda.grid,
+    fitControl,train.all,test.all,lda.args,lda.form,lda.form)
 lda.out$name = "LDA"
 print(paste(" "))
 save.image(file=datafile.name)
@@ -19,11 +39,12 @@ save.image(file=datafile.name)
 ##===================================
 ##  Quadratic Discriminant Analysis
 ##----------------------------------
-if(done){
+if("qda" %in% algs){
 qda.grid = NULL
 qda.args = list()
 qda.form = formula( y ~ . )
-qda.out = tuneMethods("qda","qda",qda.grid,fitControl,train.all,test.all,qda.args,qda.form,qda.form)
+qda.out = tuneMethods("qda","qda",qda.grid,
+    fitControl,train.all,test.all,qda.args,qda.form,qda.form)
 qda.out$name = "QDA"
 print(paste(" "))
 save.image(file=datafile.name)
@@ -34,7 +55,7 @@ save.image(file=datafile.name)
 ##===================================
 ##  Recursive Partitioning
 ##----------------------------------
-if (!done){
+if ("rpart" %in% algs){
 rpart.grid = expand.grid(.cp = c(0.0005, 0.001,(seq(0.005,.35,.005))) )
 rpart.args = list(cp=NULL)
 rpart.form = formula( y ~ . )
@@ -49,11 +70,11 @@ save.image(file=datafile.name)
 ##===================================
 ##  Random Forests
 ##----------------------------------
-if (!done){
+if ("rf" %in% algs){
 if(testing){
   rf.grid = expand.grid(.mtry = 1:3)
 }else{
-  rf.grid = expand.grid(.mtry = 1:nvars)
+  rf.grid = expand.grid(.mtry = seq(1,nvars,by=15))
 }
 rf.args = list(mtry=NULL)
 rf.out = tuneMethods("randomForest","rf",rf.grid,
@@ -67,7 +88,7 @@ save.image(file=datafile.name)
 ##  Neural Nets
 ##----------------------------------
 ## This still errors...  4/13/15
-if (done){
+if ("nnet" %in% algs){
 if(testing){
   nnet.grid = expand.grid(.decay=(0:1)/50000, .size=(1:2) )
 }else{
@@ -86,7 +107,7 @@ save.image(file=datafile.name)
 ##==================================
 ## naiveBayes
 ##----------------------------------
-if (!done){
+if ("nb" %in% algs){
 nBayes.grid = expand.grid(.fL = c(0,1),.usekernel=c(TRUE,FALSE))
 nBayes.args = list(fL=NULL,usekernel=NULL,kernel='cosine')
 nBayes.form = formula( y ~ . )
@@ -112,7 +133,7 @@ save.image(file=datafile.name)
 ##  Multiclass Logistic
 ##----------------------------------
 ## This still errors...  4/13/15
-if(done){
+if("mlog" %in% algs){
 if(testing){
   mlog.grid = expand.grid(.decay=(0:2)/50000)
 }else{
@@ -129,7 +150,7 @@ save.image(file=datafile.name)
 ##==================================
 ## svmMulti
 ##----------------------------------
-if(!done){
+if("svm" %in% algs){
 svmMulti.grid = expand.grid(.C = c(seq(0.05,2,0.05)))
 svmMulti.args = list(C = NULL, trace = FALSE, type="kbb-svc")
 svmMulti.out = tuneMethods("ksvm",NULL,svmMulti.grid,
