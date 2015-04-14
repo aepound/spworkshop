@@ -1,18 +1,61 @@
 %{
+% Template for ICASSP-2008 paper; to be used with:
+%          spconf.sty  - ICASSP/ICIP LaTeX style file, and
+%          IEEEbib.bst - IEEE bibliography style file.
+% --------------------------------------------------------------------------
 \documentclass[10pt]{article}
 \usepackage{standalone}
 
-\usepackage{currfile}
+% Directories
+%------------
 \newcommand{\libdir}{./lib}
+\newcommand{\refdir}{./refs}
+
+\usepackage{\libdir/spconf}
+\usepackage{epsfig}
+\usepackage{currfile}
+
 \input{\libdir/sarcommonheader}
 
 \onehalfspacing
+\usepackage{microtype}
+\usepackage[backend=biber]{biblatex}
 
-\title{Machine Learning on Sparse Decompositions of Hyperspectral
-  Images} 
+\addbibresource{\refdir/references}
 
-\author{Andrew Pound}
-\date{\today}
+% Title.
+% ------
+\title{Machine Learning on Hyperspectral Image Radiance Spectra} 
+
+%
+% Single address.
+% ---------------
+\name{A. E. Pound, T. K Moon, J. H Gunther\thanks{Thanks to LLNL for
+    providing the HSI data tha twas used in this study.}}
+\address{Utah State University\\
+         Electrical And Computer Engineering Department\\
+         Logan, UT}
+%
+% For example:
+% ------------
+%\address{School\\
+%	Department\\
+%	Address}
+%
+% Two addresses (uncomment and modify for two-address case).
+% ----------------------------------------------------------
+%\twoauthors
+%  {A. Author-one, B. Author-two\sthanks{Thanks to XYZ agency for funding.}}
+%	{School A-B\\
+%	Department A-B\\
+%	Address A-B}
+%  {C. Author-three, D. Author-four\sthanks{The fourth author performed the work
+%	while at ...}}
+%	{School C-D\\
+%	Department C-D\\
+%	Address C-D}
+%
+
 \begin{matcode}
 %}
 % Matlab code for running the experiments detailed in this paper.
@@ -57,8 +100,8 @@ addpath(genpath('./matlab'));
 \end{matcode}
 
 \begin{document}
-\maketitle
 
+\maketitle
 %\begin{abstract}
 %\end{abstract}
 
@@ -104,47 +147,114 @@ source('main.r')
 \begin{abstract}
   
 \end{abstract}
-
+%
+\begin{keywords}
+Hyperspectral Imaging, Remote Sensing, Machine Learning, Classification
+\end{keywords}
+%
 \section{Introduction}
+\label{sec:intro}
 
-
-
-
-\section{Hyperspectral Imaging}
 Hyperspectral Imaging (HSI) is a remote sensing technique which
 records an image from a scene in a range of different frequencies.
 The spacing between the different frquency bins is small enough to
 warrant calling it a spectrum.  
 
 HSI is used in many different fields, including forestry, geology,
-medicine, manufacturing, food quality
+medicine, manufacturing, and food quality.  
+
+Because of its wide applicability in many different industries, it is
+of interest to be able to reliably detect and classify different
+materials in a given HSI scene.  
+
+
 
 \section{Classification on HSI}% Prior art:
+\label{sec:class}
 Many varieties of classifiers have been applied to HSI data before.
+They range from simple classifiers to complex multiple layered nueral
+network classifiers.  The aim of each is to determine 
 
 \subsection{Linear Discriminant Analysis}
+\label{sec:lda}
 
+Linear Discriminant Analysis aims to find a linear boundary between
+the classes and gives the
 
 \subsection{Naive Bayes}
+\label{sec:naive}
 
 \subsection{Support Vector Machines}
+\label{sec:svm}
 
 \subsection{CART}
+\label{sec:cart}
+
+Classifcation and Regression Trees (CART) are a binary tree-based
+approach to find a classification criteria.  
+At each node of the tree, a comparison is made on the value of a
+particular variable.  
+As the data is moved down the tree, a space is carved out of the
+feature space that corresponds then to the assigned label or class and
+any testing vectors that fall within this space are labeled as such.
+
 
 \subsection{RandomForests}
+\label{sec:rf}
+
 RandomForests is an ensemble
 
 
-\section{Methods Used}
 
+
+\section{Denali Dataset}
+\label{sec:denali}
+The Denali dataset is produced from an experiment that was conducted
+at Lawrence Livermore National Laboratories.  
+In the experiment, a long wave infrared (LWIR) hyperspectral camera
+captured a scene approximately every ten minutes over a span of a few
+months.   
+Within the scene was placed a panel with a variety of different
+materials ranging from minerals to plastics to natural materials.   
+
+Of the materials in the scene we include 27 in our study.
+
+
+\subsection{Cleaning the data}
+\label{sec:dataprep}
+
+A particular 9-day period was selected that allowed extraction of the
+materials from the panel with high fidelity.  
+From this 9-day period, the center-most 9 pixels of each material were
+collected.   
+
+The pixels from each of the 936 cubes were then histogrammed to find
+the most representative spectra for each material.  
+This was found by taking the max in the rdaiance direction over every
+wavelength.   
+This we term the ``representative'' spectrum of the material over the
+time preiod.   
+
+Each cube was then ranked according to how well it matched the
+``representative'' spectra of each material, and the best twenty cubes
+were selected as the data for this survey.
+
+Ten of the cubes were used as the training set and ten were used as
+the testing set.  Thus, each set comprised of 2430 pixels (27
+materials $\times$ 9 pixels $\times$ 10 cubes).
+
+The spectra of the pixels are raw radiance ($\mu$ flicks) as measured
+by the HSI camera. 
 
 \section{Results}
-
+\label{sec:results}
 
 \section{Reproducible Research}
+\label{sec:rr}
 
 
 \section{Conclusion}
+\label{sec:conclusion}
 
 
 

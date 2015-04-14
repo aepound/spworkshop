@@ -22,7 +22,11 @@
 \usepackage{currfile}
 \usepackage{etoolbox}
 
-\usepackage[abbreviations]{foreign}
+\IfFileExists{foreign.sty}{%
+                           \usepackage[abbreviations]{foreign}}
+                          {% else...
+                           \IfFileExists{\libdir/foreign.sty}{%
+                           \usepackage[abbreviations]{\currfiledir foreign}}{}}
 \usepackage{datetime}
 \longdate
 \robustify{\formatdate}

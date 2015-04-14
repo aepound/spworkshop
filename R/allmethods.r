@@ -12,7 +12,6 @@ algs = c(algs, "rpart")
 algs = c(algs, "rf")
 #algs = c(algs, "nnet")  ## Still errors
 algs = c(algs, "nb")
-algs = c(algs, "rpart")
 #algs = c(algs, "mlog")  ## Still errors
 algs = c(algs, "svm")
 

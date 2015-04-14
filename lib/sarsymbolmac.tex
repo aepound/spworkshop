@@ -982,22 +982,22 @@
 
 
 
-\newsavebox{\citename}                    % see Goossens p. 443
-\newsavebox{\citesource}
+%\newsavebox{\citename}                    % see Goossens p. 443
+%\newsavebox{\citesource}
 \def\quotesourcefont{\small}
 % \begin{quotesource}{authorname}{[citation]}  quote \end{quotesource}
-\newenvironment{quotesource}[2]
-{\setbox200=\hbox{#2}
- \ifnum\wd200>0 
-    \begin{lrbox}{\citename} \hbox{\quotesourcefont --- \vtop{\hbox{
-            #1}\hbox{\quotesourcefont #2}}} \end{lrbox}
- \else
-    \begin{lrbox}{\citename}{\quotesourcefont --- #1} \end{lrbox}
- \fi
-\begin{quote}\quotesourcefont
-}
-{\hspace*{\fill}\nolinebreak[1]\hspace*{\fill}%
-\usebox{\citename}\end{quote}}
+%\newenvironment{quotesource}[2]
+%{\setbox200=\hbox{#2}
+% \ifnum\wd200>0 
+%    \begin{lrbox}{\citename} \hbox{\quotesourcefont --- \vtop{\hbox{
+%            #1}\hbox{\quotesourcefont #2}}} \end{lrbox}
+% \else
+%    \begin{lrbox}{\citename}{\quotesourcefont --- #1} \end{lrbox}
+% \fi
+%\begin{quote}\quotesourcefont
+%}
+%{\hspace*{\fill}\nolinebreak[1]\hspace*{\fill}%
+%\usebox{\citename}\end{quote}}
 
 \def\eqnskip{2pt}  % space between values stacked in a single equation
 \newlength{\exmatsp} % space between partials
