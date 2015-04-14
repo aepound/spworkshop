@@ -37,7 +37,7 @@ tt = try(registerDoParallel(cores=2))
 #}
 
 #====================================================
-fitControl = trainControl(method = "cv", number = 3)
+fitControl = trainControl(method = "cv", number = 10)
 
 #====================================================
 # Source the tuning methods...
@@ -55,6 +55,7 @@ for (miter in 1:N){
 
 #====================================================
 #  Running all the methods.
+datafile.name = "run2.Rdata"
 tt = try(source("allmethods.r"))
 
 if (class(tt) == "try-error"){
@@ -70,7 +71,7 @@ TuneTotal = rbind(TuneTotal,tunes)
 ErrTotal = rbind(ErrTotal,Errs)
 TuneTotal = rbind(TuneTotal,tunes)
 
-save.image(file="fullResults.Rdata")
+save.image(file="fullResults2.Rdata")
 
 }
 

@@ -42,8 +42,8 @@ test.y  <- as.factor(test[, length(test)])   # Testing classes
 
 # Let's cut it down while we are testing out the code...
 inTraining <- createFolds(train.y, k=9, list=TRUE,returnTrain=TRUE)
-train.x <- train.x[-inTraining$Fold1,]
-train.y <- train.y[-inTraining$Fold1]
+#train.x <- train.x[-inTraining$Fold1,]
+#train.y <- train.y[-inTraining$Fold1]
 
 #====================================================
 train.all = data.frame(y=train.y,x=scale(train.x))

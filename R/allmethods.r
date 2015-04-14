@@ -1,7 +1,7 @@
 Errs = list()
 done = FALSE;
-testing = TRUE;
-datafile.name = "run1.Rdata"
+testing = FALSE;
+nvars=ncol(train.x)
 
 ##===================================
 ##  Recursive Partitioning
@@ -11,7 +11,8 @@ rpart.args = list(cp=NULL)
 rpart.form = formula( y ~ . )
 rpart.out = tuneMethods("rpart","rpart",rpart.grid,
     fitControl,train.all,test.all,rpart.args,rpart.form)
-print(rpart.out$tuned)
+rpart.out$name = "CART"
+#print(rpart.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name)
 } # IF done
@@ -28,6 +29,7 @@ if(testing){
 rf.args = list(mtry=NULL)
 rf.out = tuneMethods("randomForest","rf",rf.grid,
     fitControl,train.all,test.all,rf.args)
+rf.out$name = "RandomForest"
 print(paste(" "))
 save.image(file=datafile.name)
 } # IF done
@@ -47,6 +49,7 @@ nnet.args = list(decay=NULL,size=NULL,trace=FALSE)
 nnet.form = formula( y ~ . )
 nnet.out = tuneMethods("nnet","nnet",nnet.grid,
     fitControl,train.all,test.all,nnet.args,nnet.form)
+nnet.out$name = "Neural Net"
 print(paste(" "))
 save.image(file=datafile.name)
 }# IF done
@@ -60,7 +63,8 @@ nBayes.args = list(fL=NULL,usekernel=NULL,kernel='cosine')
 nBayes.form = formula( y ~ . )
 nBayes.out = tuneMethods("NaiveBayes","nb",nBayes.grid,
     fitControl,train.all,test.all,nBayes.args,nBayes.form,nBayes.form)
-print(nBayes.out$tuned)
+nBayes.out$name = "Naive Bayes"
+#print(nBayes.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name)
 
@@ -69,7 +73,8 @@ naiveBayes.args = list(fL=NULL,usekernel=NULL,kernel='cosine')
 naiveBayes.form = formula( y ~ . )
 naiveBayes.out = tuneMethods("NaiveBayes",NULL,naiveBayes.grid,
     fitControl,train.all,test.all,naiveBayes.args,naiveBayes.form,naiveBayes.form)
-print(naiveBayes.out$tuned)
+naiveBayes.out$name = "Naive Bayes"
+#print(naiveBayes.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name)
 } # IF done
@@ -87,6 +92,7 @@ if(testing){
 mlog.args = list(decay=NULL,trace=FALSE)
 mlog.form = formula( y ~ . )
 mlog.out = tuneMethods("multinom","multinom",mlog.grid,fitControl,train.all,test.all,mlog.args,mlog.form)
+mlog.out$name = "Multi-class Logistic"
 print(paste(" "))
 save.image(file=datafile.name)
 } # IF done
@@ -99,7 +105,8 @@ svmMulti.grid = expand.grid(.C = c(seq(0.05,2,0.05)))
 svmMulti.args = list(C = NULL, trace = FALSE, type="kbb-svc")
 svmMulti.out = tuneMethods("ksvm",NULL,svmMulti.grid,
     fitControl,train.all,test.all,svmMulti.args)
-print(svmMulti.out$tuned)
+svmMulti.out$name = "Multi-class SVM"
+#print(svmMulti.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name )
 } # IF done
@@ -111,7 +118,7 @@ ErrNames = ls(pattern="[:alpha:]*.out")
 tmpErr = lapply(ErrNames,get)
 Errs = lapply(tmpErr,function(x) x$err)
 tunep= lapply(tmpErr,function(x) x$tuned)
-names(Errs) <- ErrNames
-names(tunep) <-  ErrNames
+names(Errs) <- ErrNames$name
+names(tunep) <-  ErrNames$name
 Errs = do.call(c,Errs)
 tunes= do.call(c,tunep)

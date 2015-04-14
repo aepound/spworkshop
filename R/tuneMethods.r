@@ -99,21 +99,25 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
     ## A couple of fixes for a few different methods:
     print(paste("=====","   Predicting..."))
     ##  TODO: **** This should be wrapped into a tryCatch statement: *****
-    #browser()
-    if (!is.null(abbrev) && abbrev %in% c("rpart","knn")){
+#    browser()
+    if (!is.null(abbrev) && abbrev %in% c("rpart","knn","nnet")){
       out.test = predict(this.model, newdata=test.data[,-1],type="class")
     }else{
       out.test = predict(this.model, newdata=test.data[,-1])
     }
-    if (!is.null(abbrev) && abbrev %in% c("nb","lda")){
+    if (!is.null(abbrev) && abbrev %in% c("nb","lda","nb") ||
+        !is.null(method) && method %in% c("NaiveBayes")   ){
       out.test = out.test$class
+    }
+    if (!is.null(abbrev) && abbrev %in% c("nnet")){
+      out.test = as.factor(out.test$class) ## Or somthing like this... TODO!!
     }
     
     ## Return the error back out:
     err = mean(out.test != test.data$y)  ## Misclassification error.
     print(paste("=====","   Error = ",formatC(err,digits=4,width=6,format="f",flag=0)))
     ## save: error, model, predictions on the test set, and tuned params.
-    output = list(err=err,model=this.model,pred=out.test,tuned = tuned.params) 
+    output = list(err=err,model=this.model,pred=out.test,tuned = tuned.params); 
     
   } ## End of: IF multiclass and trying to use a binary classifier...
 
