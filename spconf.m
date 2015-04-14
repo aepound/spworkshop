@@ -13,6 +13,7 @@
 
 \author{Andrew Pound}
 \date{\today}
+\begin{matcode}
 %}
 % Matlab code for running the experiments detailed in this paper.
 clear all
@@ -25,8 +26,10 @@ debugging = false;
 % are making...
 outdir = './matout';
 %{
+\end{matcode}
 % Let's make it the same in LaTeX...
 \newcommand{\matdir}{./matout}
+\begin{matcode}
 %}
 % Record version of MATLAB/Octave
 a = ver('octave');
@@ -49,14 +52,17 @@ fclose(fid);
 
 % Add in the paths necessary for the HSI processing.
 addpath(genpath('./matlab'));
-\
+
 %{
+\end{matcode}
+
 \begin{document}
 \maketitle
 
 %\begin{abstract}
 %\end{abstract}
 
+\begin{octavec}
 What am I doing for this paper? 
 I am going to perform the comparison that should have been part of my
 thesis.  I will first run a number of ML algorithms on the raw HSI
@@ -70,7 +76,7 @@ seeing if the results of the thesis are still valid.
 This document will be a Sweave/Matweave document.  I will be working
 in both languages and hope to be able to code just about everything in
 here, to be distributed as needed.  
-
+\end{octavec}
 
 
 \begin{matcode}
@@ -80,7 +86,7 @@ loadHSI
 %{  
 \end{matcode}
 
-
+\begin{Rcode}
 <<global_options, include=FALSE}>>=
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
                       echo=FALSE, warning=FALSE, message=FALSE)
@@ -90,7 +96,57 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
 <<managing_packages, include=FALSE}>>=
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
                       echo=FALSE, warning=FALSE, message=FALSE)
+setwd('./R')
+source('main.r')
 @
+\end{Rcode}
+
+\begin{abstract}
+  
+\end{abstract}
+
+\section{Introduction}
+
+
+
+
+\section{Hyperspectral Imaging}
+Hyperspectral Imaging (HSI) is a remote sensing technique which
+records an image from a scene in a range of different frequencies.
+The spacing between the different frquency bins is small enough to
+warrant calling it a spectrum.  
+
+HSI is used in many different fields, including forestry, geology,
+medicine, manufacturing, food quality
+
+\section{Classification on HSI}% Prior art:
+Many varieties of classifiers have been applied to HSI data before.
+
+\subsection{Linear Discriminant Analysis}
+
+
+\subsection{Naive Bayes}
+
+\subsection{Support Vector Machines}
+
+\subsection{CART}
+
+\subsection{RandomForests}
+RandomForests is an ensemble
+
+
+\section{Methods Used}
+
+
+\section{Results}
+
+
+\section{Reproducible Research}
+
+
+\section{Conclusion}
+
+
 
 
 \begin{matcode}
