@@ -1,16 +1,45 @@
 # Set the default for any file not recognized...
 * text=auto
 
-# Set it for matlab files
-*.m     text eol=lf
-*.fig   binary
-*.mat   binary
+#--------------------------------
+# Binary files with attributes...
+#--------------------------------
+# The Matlab binary types
+*.mat    -merge binary
+*.p      -merge binary
+*.slx    -merge binary
+*.mdl    -merge binary
+*.mexa64 -merge binary
+*.mexw32 -merge binary
+*.mexw64 -merge binary
+
+# This one is kind of iffy 
+# (because it could be an Xfig file, but I don't 
+#  use Xfig that much, so I'll keep it in here 
+#  for now.  it could always be changed to 
+#  text=auto later on, if need be...)
+*.fig    -merge binary
+
+# R save files:
+*.Rdata
+
+# Other binary types
+*.jpg    -merge binary
+*.png    -merge binary
 
 # PDFs
 *.pdf   binary
 
-
+#--------------------------------
+# Text files with attributes...
+#--------------------------------
 # TeX stuff
 *.tex   text eol=lf
+# R stuff
+*.r     text eol=lf
 *.Rnw   text eol=lf
+# Set it for matlab files
+*.m     text eol=lf
+# Shell scripts:
+*.sh     text eol=lf
 
