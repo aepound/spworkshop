@@ -21,7 +21,7 @@
 \usepackage{microtype}
 \usepackage[backend=biber]{biblatex}
 
-\addbibresource{\refdir/references}
+\addbibresource{\refdir/references.bib}
 
 % Title.
 % ------
@@ -183,6 +183,17 @@ the classes and gives the
 
 \subsection{Naive Bayes}
 \label{sec:naive}
+
+A Naive Bayes classifier considers each variable in the data vector to
+be independent of the others\autocite{Murphy2012}.  It is because of
+this assumption that 
+it is considered naive.  A model is fit such that for a feature (data)
+vector $\xbf \in \mathbb{R}^D$, 
+\begin{equation}
+  p(\xbf | y = c, \thetabf) = \prod_{j = 1}^Dp(x_j | y = c, \thetabf_{jc}.
+\end{equation}
+
+
 
 \subsection{Support Vector Machines}
 \label{sec:svm}
