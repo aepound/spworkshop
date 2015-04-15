@@ -14,13 +14,27 @@ check_n_install_packages <- function(x){
   }
 }
 
-# List out the needd packages:
-list.of.packages <- c("R.matlab","randomForest",
-                      "rpart", "e1071",
-                      "RWeka","kernlab",
-                      "nnet","gbm",
-                      "pls","caret",
+# List out the needed packages:
+list.of.packages <- c("R.matlab",
+                      "randomForest",
+                      "rpart",
+                      "e1071",
+                      "RWeka",
+                      "kernlab",
+                      "nnet",
+                      "gbm",
+                      "pls",
+                      "caret",
                       "matlab"
+                      "kernlab",
+                      "klaR",
+                      "nnet",
+                      "gbm",
+                      "plyr",
+                      "pls",
+                      "caret",
+                      "matlab",
+                      "MASS",
                       )
 # , "doMC"
 
@@ -40,11 +54,14 @@ train.y <- as.factor(train[, length(train)]) # Training classes
 test.x  <- test[,-length(test)]              # Testing data
 test.y  <- as.factor(test[, length(test)])   # Testing classes
 
+
 # Let's cut it down while we are testing out the code...
 inTraining <- createFolds(train.y, k=9, list=TRUE,returnTrain=TRUE)
-#train.x <- train.x[-inTraining$Fold1,]
-#train.y <- train.y[-inTraining$Fold1]
-
+if (testing){
+  train.x <- train.x[-inTraining$Fold1,]
+  train.y <- train.y[-inTraining$Fold1]
+}
+  
 #====================================================
 train.all = data.frame(y=train.y,x=scale(train.x))
 test.all  = data.frame(y=test.y, x=scale(test.x ))

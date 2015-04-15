@@ -1,27 +1,19 @@
+#====================================================
+#  Configuration of the run(s).
+#----------------------------------------------------
+testing = FALSE;   ## A flag to shorten some of the algorithms if we're just testing.
+data.run= 3;
+
+#====================================================
+#  Load the packages and data needed.
+#----------------------------------------------------
 source("load.r")
 
-list.of.packages <- c(
-                      "randomForest",
-                      "rpart",
-                      "e1071",
-                      "RWeka",
-                      "kernlab",
-                      "klaR",
-                      "nnet",
-                      "gbm",
-                      "plyr",
-                      "pls",
-                      "caret",
-                      "matlab",
-                      "MASS",
-                      "doParallel"
-                      )
 
-check_n_install_packages( list.of.packages )
-
-#===================================================
+#====================================================
 #  Try to use a parallel backend to the foreach loop.
-#---------------------------------------------------
+#----------------------------------------------------
+check_n_install_packages( "doParallel" )
 tt = try(registerDoParallel(cores=2))
 #if (class(tt) == "try-error"){
 #    cl = makeCluster(2)
@@ -41,39 +33,41 @@ fitControl = trainControl(method = "cv", number = 10)
 
 #====================================================
 # Source the tuning methods...
+#----------------------------------------------------
 source('tuneMethods.r')
-
-
-N = 1  ## Number of times to change up the random sample:
-
-ErrTotal = NULL
-TuneTotal = NULL
-errCnt = 0;
-
-for (miter in 1:N){
-
 
 #====================================================
 #  Running all the methods.
-datafile.name = "run2.Rdata"
+#----------------------------------------------------
+datafile.name = paste("run",
+                      formatC(data.run,format='d',flag='0'),
+                      ".Rdata")
 tt = try(source("allmethods.r"))
 
 if (class(tt) == "try-error"){
+  print(" Error running the algorithms...")
   Errs = NULL
   tunes = NULL
   errCnt = errCnt+1;
 }
 
-ErrTotal = rbind(ErrTotal,Errs)
-TuneTotal = rbind(TuneTotal,tunes)
+#====================================================
+#  Processing all the results.
+#----------------------------------------------------
+tt = try(source("postproc.r"))
 
-
-ErrTotal = rbind(ErrTotal,Errs)
-TuneTotal = rbind(TuneTotal,tunes)
-
-save.image(file="fullResults2.Rdata")
-
+if (class(tt) == "try-error"){
+  print(" Error post-processing the results...")
+  Errs = NULL
+  tunes = NULL
+  errCnt = errCnt+1;
 }
+
+save.image(file=paste("fullResults",
+           formatC(data.run,format='d',flag='0'),
+           ".Rdata"))
+
+
 
 
 

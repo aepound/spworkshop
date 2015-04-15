@@ -1,7 +1,4 @@
-Errs = list()
-done = FALSE;
-testing = FALSE;
-nvars=ncol(train.x)
+
 ##==================================
 ##  Algorithms to run:
 ##----------------------------------
@@ -33,7 +30,7 @@ lda.out = tuneMethods("lda","lda",lda.grid,
 lda.out$name = "LDA"
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "lda"
 
 ##===================================
 ##  Quadratic Discriminant Analysis
@@ -47,7 +44,7 @@ qda.out = tuneMethods("qda","qda",qda.grid,
 qda.out$name = "QDA"
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "qda"
 
 
 
@@ -64,7 +61,7 @@ rpart.out$name = "CART"
 #print(rpart.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "rpart"
 
 ##===================================
 ##  Random Forests
@@ -73,7 +70,7 @@ if ("rf" %in% algs){
 if(testing){
   rf.grid = expand.grid(.mtry = 1:3)
 }else{
-  rf.grid = expand.grid(.mtry = seq(1,nvars,by=15))
+  rf.grid = expand.grid(.mtry = seq(1,ncol(train.all)-1,by=15))
 }
 rf.args = list(mtry=NULL)
 rf.out = tuneMethods("randomForest","rf",rf.grid,
@@ -81,7 +78,7 @@ rf.out = tuneMethods("randomForest","rf",rf.grid,
 rf.out$name = "RandomForest"
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "rf"
 
 ##===================================
 ##  Neural Nets
@@ -101,7 +98,7 @@ nnet.out = tuneMethods("nnet","nnet",nnet.grid,
 nnet.out$name = "Neural Net"
 print(paste(" "))
 save.image(file=datafile.name)
-}# IF done
+} # IF "nnet"
 
 ##==================================
 ## naiveBayes
@@ -126,7 +123,7 @@ naiveBayes.out$name = "Naive Bayes"
 #print(naiveBayes.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "nb"
 
 ##===================================
 ##  Multiclass Logistic
@@ -144,7 +141,7 @@ mlog.out = tuneMethods("multinom","multinom",mlog.grid,fitControl,train.all,test
 mlog.out$name = "Multi-class Logistic"
 print(paste(" "))
 save.image(file=datafile.name)
-} # IF done
+} # IF "mlog"
 
 ##==================================
 ## svmMulti
@@ -158,16 +155,4 @@ svmMulti.out$name = "Multi-class SVM"
 #print(svmMulti.out$tuned)
 print(paste(" "))
 save.image(file=datafile.name )
-} # IF done
-
-##==================================
-## Aggregate the Errors together...
-##----------------------------------
-ErrNames = ls(pattern="[:alpha:]*.out")
-tmpErr = lapply(ErrNames,get)
-Errs = lapply(tmpErr,function(x) x$err)
-tunep= lapply(tmpErr,function(x) x$tuned)
-names(Errs) <- ErrNames$name
-names(tunep) <-  ErrNames$name
-Errs = do.call(c,Errs)
-tunes= do.call(c,tunep)
+} # IF "svm"
