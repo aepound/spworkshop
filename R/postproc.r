@@ -7,6 +7,7 @@ tmpErr = lapply(ErrNames,get)
 Errs = lapply(tmpErr,function(x) x$err)
 tunep= lapply(tmpErr,function(x) x$tuned)
 nnames=lapply(tmpErr,function(x) x$name)
+rm(tmpErr) # delete the temp variable...
 names(Errs) <- nnames
 names(tunep) <-  nnames
 Errs = do.call(c,Errs)

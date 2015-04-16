@@ -41,7 +41,7 @@ source('tuneMethods.r')
 #----------------------------------------------------
 datafile.name = paste("run",
                       formatC(data.run,format='d',flag='0'),
-                      ".Rdata")
+                      ".Rdata",sep='')
 tt = try(source("allmethods.r"))
 
 if (class(tt) == "try-error"){
@@ -62,10 +62,14 @@ if (class(tt) == "try-error"){
   tunes = NULL
   errCnt = errCnt+1;
 }
+# Save the full results to the specified file...
+if !exists(run.data.fname){
+    run.data.fname = paste("fullResults",
+        formatC(data.run,format='d',flag='0'),
+        ".Rdata",sep='')
+}
+save.image(file=run.data.fname)
 
-save.image(file=paste("fullResults",
-           formatC(data.run,format='d',flag='0'),
-           ".Rdata"))
 
 
 

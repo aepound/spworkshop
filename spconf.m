@@ -19,7 +19,7 @@
 
 \onehalfspacing
 \usepackage{microtype}
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber,style=ieee]{biblatex}
 
 \addbibresource{\refdir/references.bib}
 
@@ -30,7 +30,7 @@
 %
 % Single address.
 % ---------------
-\name{A. E. Pound, T. K Moon, J. H Gunther\thanks{Thanks to LLNL for
+\name{A. E. Pound, T. K. Moon, J. H Gunther\thanks{Thanks to LLNL for
     providing the HSI data tha twas used in this study.}}
 \address{Utah State University\\
          Electrical And Computer Engineering Department\\
@@ -131,16 +131,32 @@ loadHSI
 
 \begin{Rcode}
 <<global_options, include=FALSE}>>=
-knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
-                      echo=FALSE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE,
+                      root.dir='./R')
 @
 
 
-<<managing_packages, include=FALSE}>>=
-knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
-                      echo=FALSE, warning=FALSE, message=FALSE)
-setwd('./R')
-source('main.r')
+<<managing_packages, echo=FALSE}>>=
+#$ Specify the data run.
+data.run = 2
+
+## Set up the directories...
+repo.dir  <- dirname(getwd())
+rcode.dir <- paste(repo.dir,'/R',sep='')
+rout.dir  <- paste(repo.dir,'/Rout',sep='')
+
+## Set up save file names
+run.data.fname = paste(rout.dir, "/fullResults",
+  formatC(data.run,format='d',flag='0'),
+  ".Rdata",sep='')
+
+if !file.exists(run.data.fname){
+  source('main.r')
+}else {
+  print('Algorithms already ran. Loading results...')
+  load(run.data.fname)
+}
 @
 \end{Rcode}
 
@@ -177,9 +193,18 @@ network classifiers.  The aim of each is to determine
 
 \subsection{Linear Discriminant Analysis}
 \label{sec:lda}
+Linear Discriminant Analysis (LDA) aims to find a linear boundary
+between the classes with a minimum amount of error.
 
-Linear Discriminant Analysis aims to find a linear boundary between
-the classes and gives the
+\Textcite{Du2008} apply LDA to HSI data, and investigate the
+effectiveness of pairing it with a dimensionality reducing
+pre-processing step.
+
+\Textcite{Bandos2009} applies a regularized LDA in the particularly
+ill-posed problem of a small number of training samples and a large
+number of spectral features.  They report success in utilizing the
+regularized version of LDA and compare it to others that have used LDA
+for HSI classification.
 
 \subsection{Naive Bayes}
 \label{sec:naive}
@@ -198,10 +223,31 @@ vector $\xbf \in \mathbb{R}^D$,
 \subsection{Support Vector Machines}
 \label{sec:svm}
 
+Support Vector Machines (SVMs) are a classification technique that
+ries to maximize the margin between classes\autocite{Moon2000}.  SVMs
+find a linear separation between classes, although through the use of
+the ``kernel trick.''  The trick is to utilize a kernelized inner
+product to project the data into a different (often higher
+dimensional) space where the classes may be linearly
+separable\autocite{Murphy2012}. 
+
+SVMs have been used to classify HSI pixels numerous times.  
+\Textcite{Melgani2004} classify HSI pixels and compare the results
+against a K-nearest neighbors and a radial basis function neural
+network classifier.  
+They also investigate using a 1 versus 1 and a 1
+versus all frameworks for SVM multiclass performance.
+\Textcite{Tarabalka2010} paired a SVM with a Markov Random Field (MRF)
+in order to incorporate spatial information. 
+They attributed their
+gains to the spatial information incorporation. 
+
+
 \subsection{CART}
 \label{sec:cart}
 
-Classifcation and Regression Trees (CART) are a binary tree-based
+Classifcation and Regression Trees (CART) proposed by
+\textcite{Breiman1984} \citetitle{Breiman1984} are a binary tree-based
 approach to find a classification criteria.  
 At each node of the tree, a comparison is made on the value of a
 particular variable.  
@@ -209,13 +255,35 @@ As the data is moved down the tree, a space is carved out of the
 feature space that corresponds then to the assigned label or class and
 any testing vectors that fall within this space are labeled as such.
 
+\Textcite{GomezChova2003} determined that although the CART algorithm
+did not perform extremely well as a classifier on HSI data, it did
+perform well in feature/band selection as a form of dimensionality
+reduction.  They demonstrated that utilizing CART in this fashion
+improved classification performance.
 
 \subsection{RandomForests}
 \label{sec:rf}
 
-RandomForests is an ensemble
+\newcommand{\rf}{RandomForests}
 
+\Textcite{Breiman2001} in \citetitle{Breiman2001} proposed using an
+ensemble of classification 
+trees to improve classification and regression results. 
+Incorporating random decisions into the algorithm, Breiman named this
+algorithm \rf{}.
+The manner in which randomness was inserted into the learning of the
+trees was first, by bagging (random selection of training samples) and
+second, a random selection of the subset of the variables over which
+the split could be made at each decision.
 
+\rf{} has 
+\Textcite{Ham2005} 
+
+\Textcite{Joelsson2005}
+
+\Textcite{Crawford2003}
+%\Textcite{Abe2012}
+%\Textcite{Du2012}
 
 
 \section{Denali Dataset}
@@ -269,6 +337,7 @@ by the HSI camera.
 
 
 
+\printbibliography
 
 \begin{matcode}
 %}
