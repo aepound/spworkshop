@@ -2,3 +2,11 @@ matout
 trash
 *.asv
 *~
+*.bbl
+*.log
+*.aux
+*.blg
+spconf.Rnw
+spconf.tex
+*.run.xml
+*.bcf
