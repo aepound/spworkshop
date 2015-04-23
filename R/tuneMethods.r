@@ -110,7 +110,7 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
       out.test = out.test$class
     }
     if (!is.null(abbrev) && abbrev %in% c("nnet")){
-      out.test = as.factor(out.test$class) ## Or somthing like this... TODO!!
+      out.test = factor(as.character(out.test),levels=levels(test.data$y)) 
     }
     
     ## Return the error back out:
@@ -132,7 +132,7 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
 ## to Caret and then passes back the tuned parameters
 ## in a  matrix.
 send2caret = function(method, abbrev, search.params, tune.params, train.data, meth.args, caret.formula){
-  ## browser()
+#  browser()
   if (!is.null(caret.formula)){
     ## Using the caret fornula interface:
     if ("verbose" %in% names(meth.args)){

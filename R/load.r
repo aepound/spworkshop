@@ -1,6 +1,6 @@
 
 # Clear out the workspace:
-rm( list = ls() )
+#rm( list = ls() )
 
 # List out the needed packages:
 list.of.packages <- c("R.matlab",
@@ -9,12 +9,6 @@ list.of.packages <- c("R.matlab",
                       "e1071",
                       "RWeka",
                       "kernlab",
-                      "nnet",
-                      "gbm",
-                      "pls",
-                      "caret",
-                      "matlab"
-                      "kernlab",
                       "klaR",
                       "nnet",
                       "gbm",
@@ -22,8 +16,7 @@ list.of.packages <- c("R.matlab",
                       "pls",
                       "caret",
                       "matlab",
-                      "MASS",
-                      )
+                      "MASS")
 
 # A function to install any packages not found.
 source('check_n_install_packages.r')

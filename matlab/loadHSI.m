@@ -1,12 +1,17 @@
 %% This script will load the HSI data set.
 % This will find the data needed and load it into the Matlab works
 % space.  
-clear all
-
-datadir = ['..' filesep 'data'];
-outputdir = ['..' filesep 'matout'];
+if ~exist('reprocess','var')
+  reprocess = true;
+end
+datadir = ['.' filesep 'data'];
+outputdir = ['.' filesep 'matout'];
 testfilename  = [outputdir filesep 'test'];
 trainfilename = [outputdir filesep 'train'];
+
+if reprocess || ~exist(testfilename,'file') || ~exist(trainfilename,'file')
+clearvars('-except','datadir','outputdir','testfilename','trainfilename','reprocess')
+
 
 load([datadir filesep 'acrosstimevars.mat'],'allCubes','mats','wavelengths','t');
 
@@ -166,6 +171,9 @@ for iter = 1:size(mat2d_ts,2)
 end
 fclose(fid);
 
+else % Not reprocessing the datasets
+warning('NOT reprocessing the data from Matlab...');
+end % If reprocessing...
 
 
 

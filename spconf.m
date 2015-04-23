@@ -19,7 +19,7 @@
 
 \onehalfspacing
 \usepackage{microtype}
-\usepackage[backend=biber,style=ieee]{biblatex}
+\usepackage[style=ieee]{biblatex}
 
 \addbibresource{\refdir/references.bib}
 
@@ -76,7 +76,7 @@ outdir = './matout';
 %}
 % Record version of MATLAB/Octave
 a = ver('octave');
-if length(a) == 0
+if isempty(a)
     a = ver('matlab');
 end
 fid = fopen([outdir filesep 'vers.tex'], 'w');
@@ -124,25 +124,26 @@ here, to be distributed as needed.
 
 \begin{matcode}
 %}
+reprocess = false;
 %% Initialization/Preparation
 loadHSI
 %{  
 \end{matcode}
 
-\begin{Rcode}
-<<global_options, include=FALSE}>>=
+
+<<global_options, include=FALSE>>=
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='figs/',
-                      echo=FALSE, warning=FALSE, message=FALSE,
-                      root.dir='./R')
+                      echo=FALSE, warning=FALSE, message=FALSE)
+debug.this.file = FALSE;
 @
 
 
-<<managing_packages, echo=FALSE}>>=
+<<managing_packages, include=debug.this.file, echo=FALSE>>=
 #$ Specify the data run.
-data.run = 2
+data.run = 3
 
 ## Set up the directories...
-repo.dir  <- dirname(getwd())
+repo.dir  <- getwd()
 rcode.dir <- paste(repo.dir,'/R',sep='')
 rout.dir  <- paste(repo.dir,'/Rout',sep='')
 
@@ -150,15 +151,15 @@ rout.dir  <- paste(repo.dir,'/Rout',sep='')
 run.data.fname = paste(rout.dir, "/fullResults",
   formatC(data.run,format='d',flag='0'),
   ".Rdata",sep='')
-
-if !file.exists(run.data.fname){
-  source('main.r')
+if (!file.exists(run.data.fname)) {
+ #  source('main.r')
+ print('Going to run the whole shebang!')
 }else {
   print('Algorithms already ran. Loading results...')
   load(run.data.fname)
 }
 @
-\end{Rcode}
+
 
 \begin{abstract}
   
@@ -176,8 +177,12 @@ records an image from a scene in a range of different frequencies.
 The spacing between the different frquency bins is small enough to
 warrant calling it a spectrum.  
 
-HSI is used in many different fields, including forestry, geology,
-medicine, manufacturing, and food quality.  
+HSI is used in many different fields, including 
+forestry\autocites{Clark2005}{Govender2007}, 
+geology\autocites{Resmini1997}{Sabins1999},
+medicine\autocites{Freeman1997}{Li2013},
+%\autocites{Martin2006}{Blanco2012}{Uhr2012}{Sorg2005}{Panasyuk2007}{Akbari2012},
+manufacturing, and food quality.   
 
 Because of its wide applicability in many different industries, it is
 of interest to be able to reliably detect and classify different
@@ -200,7 +205,7 @@ between the classes with a minimum amount of error.
 effectiveness of pairing it with a dimensionality reducing
 pre-processing step.
 
-\Textcite{Bandos2009} applies a regularized LDA in the particularly
+A regularized LDA is applied by \Textcite{Bandos2009} in the particularly
 ill-posed problem of a small number of training samples and a large
 number of spectral features.  They report success in utilizing the
 regularized version of LDA and compare it to others that have used LDA
@@ -325,8 +330,43 @@ materials $\times$ 9 pixels $\times$ 10 cubes).
 The spectra of the pixels are raw radiance ($\mu$ flicks) as measured
 by the HSI camera. 
 
+\section{Methods}
+\label{sec:methods}
+
+In order to test the various different methods against the test data,
+a \Sexpr{fitControl$number}-factor crossvalidation was performed to
+identify the best tuning parameters for the models.  A classifier was
+then trained using the best tuning parameters found and the test set
+was run through the resulting model.  The test set results are shown
+in \cref{tab:results}.
+
 \section{Results}
 \label{sec:results}
+
+<<post_processing, include=debug.this.file,echo=TRUE>>=
+  source(paste(rcode.dir,'/postproc.r',sep=''))
+  print('Done with post processing...')
+  results = as.data.frame(sort(Errs))
+  names(results) <- '% Error';
+  results = t(results)*100
+@
+
+
+<<results_table, results="asis">>=
+check_n_install_packages('xtable')
+cent = do.call(paste,as.list(c(rep('c',length(results)+1),sep='')))
+xtable(results,booktabs=TRUE,
+  caption=paste('Error results from the test set using the ',
+                'parameters learned from ',
+                formatC(fitControl$number,format='d'),
+                '-fold crosvalidation.',sep=''),
+  label="tab:results",
+  caption.placement='top',
+  align=cent)  
+#$
+@
+
+
 
 \section{Reproducible Research}
 \label{sec:rr}
@@ -354,15 +394,19 @@ end
 
 % R command to run...
 
+system(['R -e "getwd();library(knitr); knit(''./' [fname ext] ''')"']);
+
 %%TODO: figure out the knitr command...
 
 % LaTeX command
 if isunix
-  system(['pdflatex -interaction nonstopmode ' fname '.tex > /dev/null']
-  system(['pdflatex -interaction nonstopmode ' fname '.tex > /dev/null']
+  system(['pdflatex -interaction nonstopmode ' fname '.tex > /dev/null']);
+  system(['bibtex ' fname ' > /dev/null']);
+  system(['pdflatex -interaction nonstopmode ' fname '.tex > /dev/null']);
 else
-  system(['pdflatex -interaction nonstopmode ' fname '.tex > trash']
-  system(['pdflatex -interaction nonstopmode ' fname '.tex > trash']
+  system(['pdflatex -interaction nonstopmode ' fname '.tex > trash']);
+  system(['bibtex ' fname ' > /dev/null']);
+  system(['pdflatex -interaction nonstopmode ' fname '.tex > trash']);
 end
 end % if ~debugging...
 %{  

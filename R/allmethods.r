@@ -4,7 +4,7 @@
 ##----------------------------------
 algs = list()
 algs = c(algs, "lda")
-#algs = c(algs, "qda")   
+#algs = c(algs, "qda")   ## Still errors
 algs = c(algs, "rpart")
 algs = c(algs, "rf")
 #algs = c(algs, "nnet")  ## Still errors

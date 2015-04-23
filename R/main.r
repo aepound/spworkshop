@@ -1,8 +1,7 @@
 #====================================================
 #  Configuration of the run(s).
 #----------------------------------------------------
-testing = FALSE;   ## A flag to shorten some of the algorithms if we're just testing.
-data.run= 3;
+testing = TRUE;   ## A flag to shorten some of the algorithms if we're just testing.
 
 #====================================================
 #  Load the packages and data needed.
@@ -46,9 +45,9 @@ tt = try(source("allmethods.r"))
 
 if (class(tt) == "try-error"){
   print(" Error running the algorithms...")
+  browser()
   Errs = NULL
   tunes = NULL
-  errCnt = errCnt+1;
 }
 
 #====================================================
@@ -60,10 +59,9 @@ if (class(tt) == "try-error"){
   print(" Error post-processing the results...")
   Errs = NULL
   tunes = NULL
-  errCnt = errCnt+1;
 }
 # Save the full results to the specified file...
-if !exists(run.data.fname){
+if (!exists(run.data.fname)){
     run.data.fname = paste("fullResults",
         formatC(data.run,format='d',flag='0'),
         ".Rdata",sep='')
