@@ -1,12 +1,7 @@
-#====================================================
-#  Configuration of the run(s).
-#----------------------------------------------------
-testing = TRUE;   ## A flag to shorten some of the algorithms if we're just testing.
 
-#====================================================
-#  Load the packages and data needed.
-#----------------------------------------------------
-source("load.r")
+if (!exists('testing')){
+  testing = FALSE;
+}
 
 
 #====================================================
@@ -61,7 +56,7 @@ if (class(tt) == "try-error"){
   tunes = NULL
 }
 # Save the full results to the specified file...
-if (!exists(run.data.fname)){
+if (!exists('run.data.fname')){
     run.data.fname = paste("fullResults",
         formatC(data.run,format='d',flag='0'),
         ".Rdata",sep='')

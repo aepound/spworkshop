@@ -75,9 +75,11 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
       ## myTuningAlg = function(method, abbrev, search.params,
       ##                        tune.params, train.data,
       ##                        meth.args, caret.method)
-      tuned.params = myTuningAlg(method, abbrev, search.params,
+      junk = capture.output(
+      tuned.params <- myTuningAlg(method, abbrev, search.params,
                                  tune.params, train.data,
                                  meth.args, caret.formula)
+      )
     }
     
     ##----------------------------------------------
@@ -91,7 +93,7 @@ tuneMethods = function(method,abbrev,search.params,tune.params,train.data,test.d
     ## Evaluate the call:    
     print(paste("=====","   Training..."))
     #browser()
-    this.model = do.call(method,meth.args)  
+    junk = capture.output( this.model <- do.call(method,meth.args) )
 
     ##--------------------------------------------
     ## Check the prediction error:

@@ -114,15 +114,15 @@ nBayes.out$name = "Naive Bayes"
 print(paste(" "))
 save.image(file=datafile.name)
 
-naiveBayes.grid = expand.grid(.fL = c(0,1),.usekernel=c(TRUE,FALSE))
-naiveBayes.args = list(fL=NULL,usekernel=NULL,kernel='cosine')
-naiveBayes.form = formula( y ~ . )
-naiveBayes.out = tuneMethods("NaiveBayes",NULL,naiveBayes.grid,
-    fitControl,train.all,test.all,naiveBayes.args,naiveBayes.form,naiveBayes.form)
-naiveBayes.out$name = "Naive Bayes"
+#naiveBayes.grid = expand.grid(.fL = c(0,1),.usekernel=c(TRUE,FALSE))
+#naiveBayes.args = list(fL=NULL,usekernel=NULL,kernel='cosine')
+#naiveBayes.form = formula( y ~ . )
+#naiveBayes.out = tuneMethods("NaiveBayes",NULL,naiveBayes.grid,
+#    fitControl,train.all,test.all,naiveBayes.args,naiveBayes.form,naiveBayes.form)
+#naiveBayes.out$name = "Naive Bayes"
 #print(naiveBayes.out$tuned)
-print(paste(" "))
-save.image(file=datafile.name)
+#print(paste(" "))
+#save.image(file=datafile.name)
 } # IF "nb"
 
 ##===================================

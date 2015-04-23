@@ -19,7 +19,7 @@
 
 \onehalfspacing
 \usepackage{microtype}
-\usepackage[style=ieee]{biblatex}
+\usepackage[style=ieee,url=false,doi=false,isbn=false,eprint=false]{biblatex}
 
 \addbibresource{\refdir/references.bib}
 
@@ -30,7 +30,7 @@
 %
 % Single address.
 % ---------------
-\name{A. E. Pound, T. K. Moon, J. H Gunther\thanks{Thanks to LLNL for
+\name{A. E. Pound, T. K. Moon, J. H. Gunther\thanks{Thanks to LLNL for
     providing the HSI data tha twas used in this study.}}
 \address{Utah State University\\
          Electrical And Computer Engineering Department\\
@@ -137,27 +137,44 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='figs/',
 debug.this.file = FALSE;
 @
 
-
 <<managing_packages, include=debug.this.file, echo=FALSE>>=
 #$ Specify the data run.
-data.run = 3
+data.run = 4
 
 ## Set up the directories...
 repo.dir  <- getwd()
 rcode.dir <- paste(repo.dir,'/R',sep='')
 rout.dir  <- paste(repo.dir,'/Rout',sep='')
+matout.dir<- paste(repo.dir,'/matout',sep='')
+@
+
+<<main_run, include=debug.this.file, echo=FALSE>>=
+#====================================================
+#  Configuration of the run(s).
+#----------------------------------------------------
+testing = FALSE;   ## A flag to shorten some of the algorithms if we're just testing.
+
+#====================================================
+#  Load the packages and data needed.
+#----------------------------------------------------
+setwd(rcode.dir)
+source("load.r")
+
+#====================================================
+fitControl = trainControl(method = "cv", number = 10)
 
 ## Set up save file names
 run.data.fname = paste(rout.dir, "/fullResults",
   formatC(data.run,format='d',flag='0'),
   ".Rdata",sep='')
 if (!file.exists(run.data.fname)) {
- #  source('main.r')
  print('Going to run the whole shebang!')
+ source('main.r')
 }else {
   print('Algorithms already ran. Loading results...')
   load(run.data.fname)
 }
+setwd(repo.dir)
 @
 
 
@@ -351,7 +368,6 @@ in \cref{tab:results}.
   results = t(results)*100
 @
 
-
 <<results_table, results="asis">>=
 check_n_install_packages('xtable')
 cent = do.call(paste,as.list(c(rep('c',length(results)+1),sep='')))
@@ -365,6 +381,60 @@ xtable(results,booktabs=TRUE,
   align=cent)  
 #$
 @
+
+\section{DL Results}
+
+<<dl_run, include=debug.this.file, echo=FALSE>>=
+#====================================================
+#  Configuration of the run(s).
+#----------------------------------------------------
+testing = FALSE;   ## A flag to shorten some of the algorithms if we're just testing.
+
+#====================================================
+#  Load the packages and data needed.
+#----------------------------------------------------
+setwd(rcode.dir)
+source("loaddl.r")
+
+#====================================================
+fitControl = trainControl(method = "cv", number = 10)
+
+## Set up save file names
+run.data.fname = paste(rout.dir, "/fullResultsDL",
+  formatC(data.run,format='d',flag='0'),
+  ".Rdata",sep='')
+if (!file.exists(run.data.fname)) {
+ print('Going to run the whole shebang on DL!')
+ source('main.r')
+}else {
+  print('DL Algorithms already ran. Loading results...')
+  load(run.data.fname)
+}
+setwd(repo.dir)
+@
+
+<<post_dl_processing, include=debug.this.file,echo=TRUE>>=
+  source(paste(rcode.dir,'/postproc.r',sep=''))
+  print('Done with post processing...')
+  results = as.data.frame(sort(Errs))
+  names(results) <- '% Error';
+  results = t(results)*100
+@
+
+<<results_dl_table, results="asis">>=
+check_n_install_packages('xtable')
+cent = do.call(paste,as.list(c(rep('c',length(results)+1),sep='')))
+xtable(results,booktabs=TRUE,
+  caption=paste('DL: Error results from the test set using the ',
+                'parameters learned from ',
+                formatC(fitControl$number,format='d'),
+                '-fold crosvalidation.',sep=''),
+  label="tab:results",
+  caption.placement='top',
+  align=cent)  
+#$
+@
+
 
 
 

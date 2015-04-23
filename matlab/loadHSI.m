@@ -9,8 +9,24 @@ outputdir = ['.' filesep 'matout'];
 testfilename  = [outputdir filesep 'test'];
 trainfilename = [outputdir filesep 'train'];
 
+dictLearn = true; % false; %
+mode = 1; % The minimize 1-norm w/ 2-norm error constraint.
+dicSz = [140 ];%, 200, 400, 500]; % Let's just choose one for now.
+lams  = [0.01]; %, 0.005, 0.001]; % lambdas to loop over.
+
+if dictLearn
+
+    dltestfilename  = [outputdir filesep 'testdl'  num2str(dicSz(1))];
+    dltrainfilename = [outputdir filesep 'traindl' num2str(dicSz(1))];
+end
+
+%%
 if reprocess || ~exist(testfilename,'file') || ~exist(trainfilename,'file')
-clearvars('-except','datadir','outputdir','testfilename','trainfilename','reprocess')
+clearvars('-except','datadir','outputdir',...
+          'testfilename','trainfilename',...
+          'dltestfilename','dltrainfilename',...
+          'mode','dicSz','lams','dictLearn',...
+          'reprocess')
 
 
 load([datadir filesep 'acrosstimevars.mat'],'allCubes','mats','wavelengths','t');
@@ -170,6 +186,75 @@ for iter = 1:size(mat2d_ts,2)
     fprintf(fid,'%d\n',classes_ts(iter));
 end
 fclose(fid);
+
+%%
+if dictLearn
+%% Dictionary Learning portion...
+% The main idea of this portion is to learna dictionary and see if it
+% classifies better on the abundances than on the raw data itself.  
+% In some ways, this is a verification of my thesis, but also a broadening
+% of the research to include more: my thesis only provided the comparison
+% of RandomForests, whereas this allows for a much braoder comparison
+% across many different classification algorithms.  
+%
+% It may also be of use to vary the parameters of the DL, to see if there
+% would be benefits to a larger or a smaller dictionary, or different
+% training parameters.
+
+% Building the Dictionary 
+% Ok, Now let's train up a dictionary for this:
+opts = buildOptions;
+opts.verbose = 1;
+
+opts.K = dicSz(1);
+opts.lambda = lams(1);
+fprintf(1,'Sz: %d, lam: %g\n',opts.K, opts.lambda);
+
+% Calculate the Dictionary:
+[trainN trainfact] = spamsNormalize(mat2d_tr);            % normalize over all data...
+%traint = bsxfun(@rdivide, train, sqrt(sum(train.^2)));  % normalize all to unit norm...
+[~, Dt] = DictLearnFunc(trainN,opts,0);
+
+% Do Sparse Coding on the training data...
+[trainalpha] = SparseCoding(trainN,Dt,opts);
+
+%%%=========================
+% Now for the Test set:
+% First, normalize by the same factor as the training set:
+testN = mat2d_ts./trainfact;
+
+% Do Sparse Coding on the training data...
+[testalpha] = SparseCoding(testN,Dt,opts);
+
+%%% Now let's write this out to file...
+% Output to R:
+% These will output to the filenames given above...
+
+% Write out the training data to the specified file.
+if exist(dltrainfilename,'file')
+    delete(dltrainfilename);
+end
+fid = fopen(dltrainfilename,'wt'); 
+for iter = 1:size(trainalpha,2)
+    fprintf(fid,'%g\t',full(trainalpha(:,iter)));
+    fprintf(fid,'%d\n',classes_tr(iter));
+end
+fclose(fid);
+
+% Write out the testing data.
+if exist(dltestfilename,'file')
+    delete(dltestfilename);
+end
+fid = fopen(dltestfilename,'wt');
+for iter = 1:size(testalpha,2)
+    fprintf(fid,'%g\t',full(testalpha(:,iter)));
+    fprintf(fid,'%d\n',classes_ts(iter));
+end
+fclose(fid);
+
+    
+%%
+end
 
 else % Not reprocessing the datasets
 warning('NOT reprocessing the data from Matlab...');
